@@ -1,13 +1,16 @@
 - clean: ['~']
 
 - link:
-    ~/.bashrc: bashrc
     ~/.gitconfig: gitconfig
     ~/.zshrc: zshrc
-    ~/.Xresources: Xresources
-    ~/.xinitrc: xinitrc
     ~/.config/i3:
-        path: config/i3/
+        path: i3/
+        create: true
+    ~/.config/kitty:
+        path: kitty/
+        create: true
+    ~/.config/nvim:
+        path: nvim/
         create: true
 
 

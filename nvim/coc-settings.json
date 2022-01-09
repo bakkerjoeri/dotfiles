@@ -1,0 +1,19 @@
+{
+	"coc.preferences.extensionUpdateCheck": "daily",
+	"coc.preferences.formatOnSaveFiletypes": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"css",
+		"html",
+		"json"
+	],
+	"diagnostic.errorSign": "✖",
+	"diagnostic.warningSign": "⚠",
+	"diagnostic.infoSign": "•",
+	"diagnostic.hintSign": "•",
+	"prettier.disableSuccessMessage": true,
+	"prettier.requireConfig": true,
+	"svelte.enable-ts-plugin": true
+}

@@ -1,0 +1,2 @@
+Plug 'evanleck/vim-svelte'
+
