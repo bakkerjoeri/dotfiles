@@ -1,0 +1,4 @@
+Xft.dpi: 192
+URxvt.font: xtf:FiraMono-Regular:size=10
+Xtf.antialias: 1
+Xtf.rgba: rgba
