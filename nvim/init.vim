@@ -25,6 +25,7 @@ set redrawtime=10000 " Allow more time for loading syntax on large files
 let mapleader = "\<space>"
 
 nmap <leader>ve :edit ~/.config/nvim/init.vim<cr>
+nmap <leader>vc :edit ~/.config/nvim/coc-settings.json<cr>
 nmap <leader>vr :source ~/.config/nvim/init.vim<cr>
 
 nmap <leader>w :w<CR>
