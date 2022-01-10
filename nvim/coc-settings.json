@@ -5,6 +5,7 @@
 		"javascriptreact",
 		"typescript",
 		"typescriptreact",
+		"svelte",
 		"css",
 		"html",
 		"json"
