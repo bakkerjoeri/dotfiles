@@ -2,4 +2,4 @@
 	email = bakkerjoeri@gmail.com
 	name = bakkerjoeri
 [core]
-	editor = vim
+	editor = nvim
