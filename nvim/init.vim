@@ -66,6 +66,9 @@ vnoremap > >gv
 vnoremap y myy`y
 vnoremap Y myY`y
 
+" Copy using the machine register
+vnoremap <C-c> :'<,'>w !xclip -i -sel c<CR><CR>
+
 " When text is wrapped, move by terminal rows, not lines, unless a count is provided
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
