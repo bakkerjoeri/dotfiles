@@ -54,6 +54,12 @@ nnoremap <leader>tj :tablast<CR>
 nnoremap <leader>tk :tabfirst<CR>
 nnoremap <leader>tl :tabnext<CR>
 
+" Buffer navigation
+nnoremap <leader>bh :bprevious<CR>
+nnoremap <leader>bj :blast<CR>
+nnoremap <leader>bk :bfirst<CR>
+nnoremap <leader>bl :bnext<CR>
+
 " Allow gf to open non-existent files
 map gf :edit <cfile><cr>
 
