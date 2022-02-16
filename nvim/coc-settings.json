@@ -14,7 +14,6 @@
 	"diagnostic.warningSign": "⚠",
 	"diagnostic.infoSign": "•",
 	"diagnostic.hintSign": "•",
-	"prettier.disableSuccessMessage": true,
 	"prettier.requireConfig": true,
 	"svelte.enable-ts-plugin": true
 }
