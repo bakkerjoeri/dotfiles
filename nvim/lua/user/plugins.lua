@@ -26,6 +26,17 @@ packer.startup(function(use)
 	}
 	use { 'jxnblk/vim-mdx-js' }
 	use { 'mxw/vim-jsx' }
+	use {
+		'nvim-telescope/telescope.nvim',
+		requires = {
+			{ 'nvim-lua/plenary.nvim' },
+			{ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+			{ 'nvim-telescope/telescope-live-grep-raw.nvim' },
+		},
+		config = function()
+			require('user.plugins.telescope')
+		end
+	}
 	use { 'pangloss/vim-javascript' }
 	use { 'tpope/vim-commentary' }
 	use { 'tpope/vim-eunuch' }
