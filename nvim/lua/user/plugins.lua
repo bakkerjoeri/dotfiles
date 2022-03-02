@@ -2,7 +2,13 @@ local packer = require 'lib.packer'
 
 packer.startup(function(use)
 	use { 'wbthomason/packer.nvim' }
-
+	use {
+		'akinsho/bufferline.nvim',
+		requires = 'kyazdani42/nvim-web-devicons',
+		config = function()
+			require('user.plugins.bufferline')
+		end
+  }
 	use {
 		'dracula/vim',
 		as = 'dracula',
@@ -47,6 +53,13 @@ packer.startup(function(use)
 		end
 	}
 	use { 'jxnblk/vim-mdx-js' }
+	use {
+		'kyazdani42/nvim-tree.lua',
+		requires = 'kyazdani42/nvim-web-devicons',
+		config = function()
+			require('user.plugins.nvim-tree')
+		end
+	}
 	use { 'mxw/vim-jsx' }
 	use {
 		'neovim/nvim-lspconfig',
@@ -58,9 +71,17 @@ packer.startup(function(use)
 		end
 	}
 	use {
+		'nvim-lualine/lualine.nvim',
+		requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+		config = function()
+			require('user.plugins.lualine')
+		end
+	}
+	use {
 		'nvim-telescope/telescope.nvim',
 		requires = {
 			{ 'nvim-lua/plenary.nvim' },
+			{ 'kyazdani42/nvim-web-devicons' },
 			{ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
 			{ 'nvim-telescope/telescope-live-grep-raw.nvim' },
 		},
