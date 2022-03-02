@@ -27,6 +27,8 @@ packer.startup(function(use)
 			'hrsh7th/cmp-cmdline',
 			'hrsh7th/cmp-nvim-lua',
 			'hrsh7th/cmp-nvim-lsp-signature-help',
+			'saadparwaiz1/cmp_luasnip',
+			'L3MON4D3/LuaSnip',
 		},
 		config = function()
 			require('user.plugins.cmp')
@@ -40,6 +42,12 @@ packer.startup(function(use)
 	}
 	use { 'jxnblk/vim-mdx-js' }
 	use { 'mxw/vim-jsx' }
+	use {
+		'neovim/nvim-lspconfig',
+		config = function()
+			require('user.plugins.lspconfig')
+		end
+	}
 	use {
 		'nvim-telescope/telescope.nvim',
 		requires = {
