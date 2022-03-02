@@ -17,6 +17,12 @@ packer.startup(function(use)
 			require('user.plugins.svelte')
 		end
 	}
+	use {
+		'folke/trouble.nvim',
+		config = function()
+			require('user.plugins.trouble')
+		end
+	}
 	use { 'HerringtonDarkholme/yats.vim' }
 	use {
 		'hrsh7th/nvim-cmp',
@@ -44,6 +50,9 @@ packer.startup(function(use)
 	use { 'mxw/vim-jsx' }
 	use {
 		'neovim/nvim-lspconfig',
+		requires = {
+			'jose-elias-alvarez/null-ls.nvim',
+		},
 		config = function()
 			require('user.plugins.lspconfig')
 		end
