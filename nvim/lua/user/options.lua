@@ -3,6 +3,7 @@ vim.o.tabstop = 4
 vim.o.signcolumn = 'yes:2'
 vim.o.relativenumber = true
 vim.o.termguicolors = true
+vim.o.title = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.number = true
