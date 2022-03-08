@@ -24,6 +24,7 @@ end
 
 for _, lsp in pairs({
 	'cssls',
+	'eslint',
 	'html',
 	'jsonls',
 }) do
@@ -61,8 +62,6 @@ null_ls.setup({
 	capabilities = capabilities,
 	flags = { debounce_text_changes = 150 },
 	sources = {
-		null_ls.builtins.diagnostics.eslint_d,
-		null_ls.builtins.code_actions.eslint_d,
 		null_ls.builtins.formatting.prettier.with({
 			only_local = "node_modules/.bin",
 			extra_filetypes = {
