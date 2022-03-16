@@ -99,4 +99,10 @@ packer.startup(function(use)
 	}
 	use { 'tpope/vim-repeat' }
 	use { 'tpope/vim-surround' }
+	use {
+		'voldikss/vim-floaterm',
+		config = function()
+			require('user.plugins.floaterm')
+		end
+	}
 end)
