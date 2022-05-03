@@ -71,6 +71,12 @@ packer.startup(function(use)
 		end
 	}
 	use {
+		'numToStr/FTerm.nvim',
+		config = function()
+			require('user.plugins.fterm')
+		end
+	}
+	use {
 		'nvim-lualine/lualine.nvim',
 		requires = { 'kyazdani42/nvim-web-devicons', opt = true },
 		config = function()
@@ -99,10 +105,4 @@ packer.startup(function(use)
 	}
 	use { 'tpope/vim-repeat' }
 	use { 'tpope/vim-surround' }
-	use {
-		'voldikss/vim-floaterm',
-		config = function()
-			require('user.plugins.floaterm')
-		end
-	}
 end)
