@@ -95,6 +95,13 @@ packer.startup(function(use)
 			require('user.plugins.telescope')
 		end
 	}
+	use {
+		'nvim-treesitter/nvim-treesitter',
+		run = ':TSUpdate',
+		config = function()
+			require('user.plugins.treesitter')
+		end
+	}
 	use { 'pangloss/vim-javascript' }
 	use { 'tpope/vim-commentary' }
 	use { 'tpope/vim-eunuch' }
