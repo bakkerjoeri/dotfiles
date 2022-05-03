@@ -32,8 +32,8 @@ for _, lsp in pairs({
 }) do
 	lspconfig[lsp].setup({
 		on_attach = function(client, bufnr)
-			client.resolved_capabilities.document_formatting = false
-			client.resolved_capabilities.document_range_formatting = false
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
 			on_attach(client, bufnr)
 		end,
 		capabilities = capabilities,
@@ -43,11 +43,11 @@ end
 
 null_ls.setup({
 	on_attach = function(client, bufnr)
-		if client.resolved_capabilities.document_formatting then
+		if client.server_capabilities.documentFormattingProvider then
 			vim.cmd([[
 				augroup LspFormatting
 					autocmd! * <buffer>
-					autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+					autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
 				augroup END
 			]])
 		end
