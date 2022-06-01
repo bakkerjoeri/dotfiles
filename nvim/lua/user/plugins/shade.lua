@@ -1,4 +1,4 @@
 require('shade').setup({
-	overlay_opacity = 40,
+	overlay_opacity = 60,
 	toggle = '<Leader>s'
 })
