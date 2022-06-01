@@ -35,6 +35,7 @@ keymap('n', '<leader>bh', ':bprevious<CR>')
 keymap('n', '<leader>bj', ':blast<CR>')
 keymap('n', '<leader>bk', ':bfirst<CR>')
 keymap('n', '<leader>bl', ':bnext<CR>')
+keymap('n', '<leader>bq', ':q<CR>')
 
 -- Allow gf to open non-existent files
 keymap('', 'gf', ':edit <cfile><cr>')
