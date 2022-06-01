@@ -8,6 +8,7 @@ antibody bundle ohmyzsh/ohmyzsh path:plugins/cp
 antibody bundle ohmyzsh/ohmyzsh path:plugins/git
 antibody bundle ohmyzsh/ohmyzsh path:plugins/npm
 antibody bundle ohmyzsh/ohmyzsh path:plugins/nvm
+antibody bundle ohmyzsh/ohmyzsh path:plugins/vi-mode
 antibody bundle ohmyzsh/ohmyzsh path:plugins/z
 antibody bundle zsh-users/zsh-syntax-highlighting
 antibody bundle dracula/zsh
