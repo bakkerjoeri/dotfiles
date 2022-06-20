@@ -103,11 +103,6 @@ packer.startup(function(use)
 		end
 	}
 	use { 'pangloss/vim-javascript' }
-	use { 'sunjon/shade.nvim',
-		config = function()
-			require('user.plugins.shade')
-		end
-	}
 	use { 'tpope/vim-commentary' }
 	use { 'tpope/vim-eunuch' }
 	use {
