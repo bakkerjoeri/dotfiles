@@ -2,6 +2,7 @@
 
 - link:
     ~/.gitconfig: gitconfig
+    ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
     ~/.config/i3:
         path: i3/
