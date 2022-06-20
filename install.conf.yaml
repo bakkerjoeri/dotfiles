@@ -2,6 +2,7 @@
 
 - link:
     ~/.gitconfig: gitconfig
+    ~/.tmux: tmux
     ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
     ~/.config/i3:
@@ -13,4 +14,3 @@
     ~/.config/nvim:
         path: nvim/
         create: true
-
