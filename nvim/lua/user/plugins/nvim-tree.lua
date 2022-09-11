@@ -1,6 +1,3 @@
-vim.g.nvim_tree_highlight_opened_files = 1
-vim.g.nvim_tree_group_empty = 1
-
 require('nvim-tree').setup {
 	git = {
 		ignore = false,
@@ -9,6 +6,7 @@ require('nvim-tree').setup {
 		indent_markers = {
 			enable = true,
 		},
+		group_empty = true,
 	},
 }
 
