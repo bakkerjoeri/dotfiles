@@ -24,7 +24,6 @@ end
 
 for _, lsp in pairs({
 	'cssls',
-	'eslint',
 	'html',
 	'jsonls',
 	'svelte',
@@ -40,6 +39,16 @@ for _, lsp in pairs({
 		end,
 	})
 end
+
+lspconfig.eslint.setup({
+	capabilities = capabilities,
+	flags = { debounce_text_changes = 150 },
+	on_attach = function(client, bufnr)
+		vim.cmd("autocmd BufWritePre <buffer> EslintFixAll")
+		on_attach(client, bufnr)
+	end,
+	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
+})
 
 null_ls.setup({
 	capabilities = capabilities,
