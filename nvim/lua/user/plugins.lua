@@ -8,7 +8,8 @@ packer.startup(function(use)
 		config = function()
 			require('user.plugins.bufferline')
 		end
-  }
+	}
+	use { 'dkarter/bullets.vim' }
 	use {
 		'dracula/vim',
 		as = 'dracula',
