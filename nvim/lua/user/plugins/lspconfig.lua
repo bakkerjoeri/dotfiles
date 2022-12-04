@@ -3,9 +3,9 @@ local null_ls = require('null-ls')
 local buf_option = vim.api.nvim_buf_set_option
 local buf_keymap = require('lib.buf_keymap')
 
-vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format({ timeout_ms = 10000 })' ]]
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local on_attach = function(_, bufnr)
 	buf_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -16,8 +16,8 @@ local on_attach = function(_, bufnr)
 	buf_keymap(bufnr, 'n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 	buf_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
 	buf_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-	buf_keymap(bufnr, 'n', '<leader>rf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-	buf_keymap(bufnr, 'v', '<leader>rf', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
+	buf_keymap(bufnr, 'n', '<leader>rf', '<cmd>lua vim.lsp.buf.format()<CR>')
+	buf_keymap(bufnr, 'v', '<leader>rf', '<cmd>lua vim.lsp.buf.range_format()<CR>')
 	buf_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 	buf_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 end
@@ -33,8 +33,8 @@ for _, lsp in pairs({
 		capabilities = capabilities,
 		flags = { debounce_text_changes = 150 },
 		on_attach = function(client, bufnr)
-			client.resolved_capabilities.document_formatting = false
-			client.resolved_capabilities.document_range_formatting = false
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
 			on_attach(client, bufnr)
 		end,
 	})
@@ -60,7 +60,7 @@ null_ls.setup({
 				group = augroup,
 				buffer = bufnr,
 				callback = function()
-					vim.lsp.buf.formatting_sync()
+					vim.lsp.buf.format({ timeout_ms = 10000 })
 				end,
 			})
 		end
