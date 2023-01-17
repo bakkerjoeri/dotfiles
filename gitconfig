@@ -3,3 +3,5 @@
 	name = bakkerjoeri
 [core]
 	editor = nvim
+[init]
+	defaultBranch = main
