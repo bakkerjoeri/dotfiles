@@ -49,9 +49,6 @@ keymap('v', '>', '>gv')
 keymap('v', 'y', 'myy`y')
 keymap('v', 'Y', 'myY`y')
 
--- Copy using the machine register
-keymap('n', '<C-c>', ':\'<,\'>w !xclip -i -sel c<CR><CR>')
-
 -- When text is wrapped, move by terminal rows, not lines, unless a count is provided
 keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
