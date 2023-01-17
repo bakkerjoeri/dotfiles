@@ -66,6 +66,9 @@ packer.startup(function(use)
 		'neovim/nvim-lspconfig',
 		requires = {
 			'jose-elias-alvarez/null-ls.nvim',
+			'williamboman/mason.nvim',
+			'williamboman/mason-lspconfig.nvim',
+			'simrat39/rust-tools.nvim'
 		},
 		config = function()
 			require('user.plugins.lspconfig')
@@ -104,6 +107,13 @@ packer.startup(function(use)
 		end
 	}
 	use { 'pangloss/vim-javascript' }
+	use { 'simrat39/rust-tools.nvim' }
+	use { 
+		'rust-lang/rust.vim',
+		config = function()
+			require('user.plugins.rust')
+		end
+	}
 	use { 'tpope/vim-commentary' }
 	use { 'tpope/vim-eunuch' }
 	use {

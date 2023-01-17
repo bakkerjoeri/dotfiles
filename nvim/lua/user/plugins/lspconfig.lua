@@ -1,4 +1,6 @@
 local lspconfig = require('lspconfig')
+local mason = require('mason')
+local mason_lspconfig = require('mason-lspconfig')
 local null_ls = require('null-ls')
 local buf_option = vim.api.nvim_buf_set_option
 local buf_keymap = require('lib.buf_keymap')
@@ -22,32 +24,48 @@ local on_attach = function(_, bufnr)
 	buf_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 end
 
-for _, lsp in pairs({
-	'cssls',
-	'html',
-	'jsonls',
-	'svelte',
-	'tsserver',
-}) do
-	lspconfig[lsp].setup({
-		capabilities = capabilities,
-		flags = { debounce_text_changes = 150 },
-		on_attach = function(client, bufnr)
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
-			on_attach(client, bufnr)
-		end,
-	})
-end
-
-lspconfig.eslint.setup({
-	capabilities = capabilities,
-	flags = { debounce_text_changes = 150 },
-	on_attach = function(client, bufnr)
-		vim.cmd("autocmd BufWritePre <buffer> EslintFixAll")
-		on_attach(client, bufnr)
+mason.setup()
+mason_lspconfig.setup({
+	ensure_installed = {
+		'cssls',
+		'eslint',
+		'html',
+		'jsonls',
+		'rust_analyzer',
+		'svelte',
+		'tsserver',
+	}
+})
+mason_lspconfig.setup_handlers({
+	function (server_name)
+		lspconfig[server_name].setup({
+			capabilities = capabilities,
+			flags = { debounce_text_changes = 150 },
+			on_attach = function(client, bufnr)
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+				on_attach(client, bufnr)
+			end,
+		})
 	end,
-	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
+	['eslint'] = function()
+		lspconfig.eslint.setup({
+			capabilities = capabilities,
+			flags = { debounce_text_changes = 150 },
+			on_attach = function(client, bufnr)
+				vim.cmd("autocmd BufWritePre <buffer> EslintFixAll")
+				on_attach(client, bufnr)
+			end,
+			filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
+		})
+	end,
+	['rust_analyzer'] = function()
+		require('rust-tools').setup({
+			server = {
+				on_attach = on_attach
+			}
+		})
+	end,
 })
 
 null_ls.setup({
