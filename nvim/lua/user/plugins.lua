@@ -53,6 +53,7 @@ packer.startup(function(use)
 			require('user.plugins.sayonara')
 		end
 	}
+	use { 'jiangmiao/auto-pairs' }
 	use { 'jxnblk/vim-mdx-js' }
 	use {
 		'kyazdani42/nvim-tree.lua',
