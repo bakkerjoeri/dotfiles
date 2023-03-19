@@ -5,40 +5,40 @@ local keymap = require 'lib.keymap'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<CR>')
+keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<CR>', { desc = 'edit neovim config' })
 
-keymap('n', '<leader>w', ':w<CR>')
-keymap('n', '<leader>W', ':noa w<CR>')
-keymap('n', '<leader>k', ':nohlsearch<CR>')
+keymap('n', '<leader>w', ':w<CR>', { desc = 'write buffer' })
+keymap('n', '<leader>W', ':noa w<CR>', { desc = 'write without formatting' })
+keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'clear search highlights' })
 
 -- Window & tab management
-keymap('n', '<leader>sh', '<C-w>s')
-keymap('n', '<leader>sv', '<C-w>v')
+keymap('n', '<leader>sh', '<C-w>s', { desc = 'write buffer' })
+keymap('n', '<leader>sv', '<C-w>v', { desc = 'write buffer' })
 
-keymap('n', '<A-h>', '<C-w>h')
-keymap('n', '<A-j>', '<C-w>j')
-keymap('n', '<A-k>', '<C-w>k')
-keymap('n', '<A-l>', '<C-w>l')
+keymap('n', '<A-h>', '<C-w>h', { desc = 'Go to the left window' })
+keymap('n', '<A-j>', '<C-w>j', { desc = 'Go to the down window ' })
+keymap('n', '<A-k>', '<C-w>k', { desc = 'Go to the up window' })
+keymap('n', '<A-l>', '<C-w>l', { desc = 'Go to the right window' })
 
-keymap('n', '<A-H>', '<C-w><')
-keymap('n', '<A-L>', '<C-w>>')
-keymap('n', '<A-J>', '<C-w>-')
-keymap('n', '<A-K>', '<C-w>+')
+keymap('n', '<A-H>', '<C-w><', { desc = 'Decrease width' })
+keymap('n', '<A-L>', '<C-w>>', { desc = 'Increase width' })
+keymap('n', '<A-J>', '<C-w>-', { desc = 'Decrease height' })
+keymap('n', '<A-K>', '<C-w>+', { desc = 'Increase height' })
 
-keymap('n', '<leader>tn', ':tabnew<CR>')
-keymap('n', '<leader>tq', ':tabclose<CR>')
+keymap('n', '<leader>tn', ':tabnew<CR>', { desc = 'Open a new tab' })
+keymap('n', '<leader>tq', ':tabclose<CR>', { desc = 'Close current tab' })
 
-keymap('n', '<leader>th', ':tabprevious<CR>')
-keymap('n', '<leader>tj', ':tablast<CR>')
-keymap('n', '<leader>tk', ':tabfirst<CR>')
-keymap('n', '<leader>tl', ':tabnext<CR>')
+keymap('n', '<leader>th', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
+keymap('n', '<leader>tj', ':tablast<CR>', { desc = 'Go to the last tab' })
+keymap('n', '<leader>tk', ':tabfirst<CR>', { desc = 'Go to the first tab' })
+keymap('n', '<leader>tl', ':tabnext<CR>', { desc = 'Go to the next tab' })
 
 -- Buffer navigation
-keymap('n', '<leader>bh', ':bprevious<CR>')
-keymap('n', '<leader>bj', ':blast<CR>')
-keymap('n', '<leader>bk', ':bfirst<CR>')
-keymap('n', '<leader>bl', ':bnext<CR>')
-keymap('n', '<leader>bq', ':q<CR>')
+keymap('n', '<leader>bh', ':bprevious<CR>', { desc = 'Go to the previous buffer' })
+keymap('n', '<leader>bj', ':blast<CR>', { desc = 'Go to the last buffer' })
+keymap('n', '<leader>bk', ':bfirst<CR>', { desc = 'Go to the first buffer' })
+keymap('n', '<leader>bl', ':bnext<CR>', { desc = 'Go to the next buffer' })
+keymap('n', '<leader>bq', ':q<CR>', { desc = 'Close current buffer' })
 
 -- Reselect visual selection after indenting
 keymap('v', '<', '<gv')
@@ -74,6 +74,8 @@ vim.o.listchars = 'tab:> ,lead:·,trail:·'
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
 vim.o.updatetime = 250
+vim.o.timeout = true
+vim.o.timeoutlen = 300
 vim.o.showmode = false
 
 -- SECTION: Plugins
@@ -99,26 +101,6 @@ require('lazy').setup({
 		'nvim-telescope/telescope.nvim',
 		version = '*',
 		dependencies = { 'nvim-lua/plenary.nvim' },
-		keys = {
-			{
-				'<leader>/',
-				function()
-					require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-						winblend = 10,
-						previewer = false,
-					})
-				end,
-				desc = "[/] search in current buffer",
-			},
-			{ '<leader>sf', require('telescope.builtin').find_files, desc = '[s]earch [f]iles by name' },
-			{ '<leader>sF', require('telescope.builtin').live_grep, desc = '[s]earch [F]iles by content' },
-			{ '<leader>sw', require('telescope.builtin').grep_string, desc = '[s]earch current [w]ord' },
-			{ '<leader>sb', require('telescope.builtin').buffers, desc = '[s]earch buffers' },
-			{ '<leader>sd', require('telescope.builtin').diagnostics, desc = '[s]earch [d]iagnostics' },
-			{ '<leader>sc', require('telescope.builtin').commands, desc = '[s]earch [c]ommands' },
-			{ '<leader>sk', require('telescope.builtin').keymaps, desc = '[s]earch normal [k]eymaps' },
-			{ '<leader>d', require('telescope.builtin').diagnostics, desc = 'show [d]iagnostics' },
-		},
 		config = function()
 			require('telescope').setup({
 				defaults = {
@@ -135,10 +117,26 @@ require('lazy').setup({
 				},
 			})
 			require('telescope').load_extension('fzf')
+			vim.keymap.set('n', '<leader>/', function()
+				require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+					winblend = 10,
+					previewer = false,
+				})
+			end, { desc = "Find in current buffer"})
+			vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Find files by content'})
+			vim.keymap.set('n', '<leader>fF', require('telescope.builtin').live_grep, { desc = 'Find files by content'})
+			vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = 'Find current word'})
+			vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = 'Find buffers'})
+			vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = 'Find diagnostics'})
+			vim.keymap.set('n', '<leader>fc', require('telescope.builtin').commands, { desc = 'Find commands'})
+			vim.keymap.set('n', '<leader>fk', require('telescope.builtin').keymaps, { desc = 'Find normal keymaps'})
+			vim.keymap.set('n', '<leader>d', require('telescope.builtin').diagnostics, { desc = 'Show diagnostics'})
 		end,
 	},
 	{
 		'nvim-telescope/telescope-fzf-native.nvim',
+		-- NOTE: If you are having trouble with this installation,
+		--       refer to the README for telescope-fzf-native for more instructions.
 		build = 'make',
 		cond = function()
 			return vim.fn.executable 'make' == 1
@@ -153,7 +151,7 @@ require('lazy').setup({
 			"MunifTanjim/nui.nvim",
 		},
 		keys = {
-			{ "<leader>f", "<cmd>NeoTreeFocusToggle<cr>", desc = "Toggle [f]ile browser" },
+			{ "<leader>n", "<cmd>NeoTreeFocusToggle<cr>", desc = "Toggle file browser" },
 		},
 		config = function()
 			require('neo-tree').setup({
@@ -194,7 +192,7 @@ require('lazy').setup({
 			'nvim-tree/nvim-web-devicons',
 		},
 		keys = {
-			{ 'gb', '<cmd>BufferLinePick<CR>', desc = '[g]o to [b]uffer' },
+			{ 'gb', '<cmd>BufferLinePick<CR>', desc = 'Go to buffer...' },
 		},
 		config = function()
 			vim.opt.termguicolors = true
@@ -223,7 +221,7 @@ require('lazy').setup({
 		-- Easily quit tabs
 		'jessarcher/vim-sayonara',
 		keys = {
-			{ '<Leader>q', ':Sayonara!<CR>' },
+			{ '<Leader>q', ':Sayonara!<CR>', desc = 'Close current buffer' },
 		},
 	},
 	{
