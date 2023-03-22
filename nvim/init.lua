@@ -91,6 +91,7 @@ require('lazy').setup({
 	'tpope/vim-repeat',
 	'tpope/vim-surround',
 	'tpope/vim-sleuth',
+	'chaoren/vim-wordmotion',
 	{
 		'dracula/vim',
 		config = function()
