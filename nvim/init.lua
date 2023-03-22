@@ -195,7 +195,29 @@ require('lazy').setup({
 		dependencies = {
 			'nvim-tree/nvim-web-devicons'
 		},
-		opts = {},
+		config = function()
+			require('lualine').setup({
+				options = {
+					disabled_filetypes = {'neo-tree'},
+				},
+				sections = {
+					lualine_a = {'mode'},
+					lualine_b = {'filename'},
+					lualine_c = {'location', 'diagnostics'},
+					lualine_x = {'filetype'},
+					lualine_y = {'diff', 'branch'},
+					lualine_z = {},
+				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = {'filename'},
+					lualine_x = {'branch'},
+					lualine_y = {},
+					lualine_z = {},
+				},
+			})
+		end,
 	},
 	{
 		'akinsho/bufferline.nvim',
@@ -249,6 +271,11 @@ require('lazy').setup({
 			'hrsh7th/cmp-nvim-lsp',
 		},
 		config = function()
+			vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
+			vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+			vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+			vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+
 			local on_attach = function(_, bufnr)
 				vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
 					vim.lsp.buf.format()
@@ -433,11 +460,14 @@ require('lazy').setup({
 		config = function()
 			require('FTerm').setup({
 				dimensions = {
+
 					width = 0.9,
-					height = 0.9,
+					height = 0.9
 				},
 			})
 		end,
 	},
+
 	{ 'folke/which-key.nvim', opts = {} },
+
 })
