@@ -1,19 +1,19 @@
--- SECTION: Key bindings
+-- Key bindings
 local keymap = require 'lib.keymap'
 
 -- NOTE: Leader needs to be set before plugins are required to prevent wrong leader from being used by those plugins.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<CR>', { desc = 'edit neovim config' })
+keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<CR>', { desc = 'Edit neovim config' })
 
-keymap('n', '<leader>w', ':w<CR>', { desc = 'write buffer' })
-keymap('n', '<leader>W', ':noa w<CR>', { desc = 'write without formatting' })
-keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'clear search highlights' })
+keymap('n', '<leader>w', ':w<CR>', { desc = 'Write buffer' })
+keymap('n', '<leader>W', ':noa w<CR>', { desc = 'Write without formatting' })
+keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'Clear search highlights' })
 
 -- Window & tab management
-keymap('n', '<leader>sh', '<C-w>s', { desc = 'write buffer' })
-keymap('n', '<leader>sv', '<C-w>v', { desc = 'write buffer' })
+keymap('n', '<leader>sh', '<C-w>s', { desc = 'Split horizontally' })
+keymap('n', '<leader>sv', '<C-w>v', { desc = 'Split vertically' })
 
 keymap('n', '<A-h>', '<C-w>h', { desc = 'Go to the left window' })
 keymap('n', '<A-j>', '<C-w>j', { desc = 'Go to the down window ' })
@@ -57,7 +57,6 @@ keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 -- TODO should I remove these settings and use vim-slueth?
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
-
 vim.o.signcolumn = 'yes:2'
 vim.o.relativenumber = true
 vim.o.termguicolors = true
@@ -83,7 +82,18 @@ local install_lazy = require('lib.install_lazy')
 install_lazy()
 
 require('lazy').setup({
-	'jiangmiao/auto-pairs',
+	{
+		'jiangmiao/auto-pairs',
+		config = function()
+			vim.cmd([[
+				let g:AutoPairs = AutoPairsDefine({'<': '>'})
+			]])
+
+			vim.g.AutoPairsMapCR = false
+			vim.g.AutoPairsCenterLine = false
+			vim.g.AutoPairsCenterLine = false
+		end
+	},
 	'dkarter/bullets.vim',
 	'tpope/vim-commentary',
 	'tpope/vim-eunuch',
@@ -124,6 +134,7 @@ require('lazy').setup({
 					previewer = false,
 				})
 			end, { desc = "Find in current buffer"})
+			vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 'Resume last search'})
 			vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Find files by content'})
 			vim.keymap.set('n', '<leader>fF', require('telescope.builtin').live_grep, { desc = 'Find files by content'})
 			vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = 'Find current word'})
@@ -229,9 +240,10 @@ require('lazy').setup({
 		-- LSP
 		'neovim/nvim-lspconfig',
 		dependencies = {
+			'jose-elias-alvarez/null-ls.nvim',
 			'williamboman/mason.nvim',
 			'williamboman/mason-lspconfig.nvim',
-			'j-hui/fidget.nvim',
+			{ 'j-hui/fidget.nvim', opts = {} },
 			'folke/neodev.nvim',
 			'simrat39/rust-tools.nvim',
 			'hrsh7th/cmp-nvim-lsp',
@@ -241,6 +253,17 @@ require('lazy').setup({
 				vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
 					vim.lsp.buf.format()
 				end, { desc = 'Format current buffer with LSP' })
+
+				vim.keymap.set('n', 'gd', ':Telescope lsp_definitions<CR>', { buffer = bufnr, desc = 'Go to definition' })
+				vim.keymap.set('n', 'gy', ':Telescope lsp_type_definitions<CR>', { buffer = bufnr, desc = 'Go to type definition' })
+				vim.keymap.set('n', 'gi', ':Telescope lsp_implementations<CR>', { buffer = bufnr, desc = 'Go to implementations' })
+				vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>', { buffer = bufnr, desc = 'List references' })
+				vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { buffer = bufnr, desc = 'Hover documentation' })
+				vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
+				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
+				vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = bufnr, desc = 'Rename symbol' })
+				vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { buffer = bufnr, desc = 'Code actions' })
+				vim.keymap.set('v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', { buffer = bufnr, desc = 'Code actions on range' })
 			end
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -256,6 +279,7 @@ require('lazy').setup({
 				'eslint',
 				'html',
 				'jsonls',
+				'lua_ls',
 				'rust_analyzer',
 				'svelte',
 				'tsserver',
@@ -269,7 +293,12 @@ require('lazy').setup({
 				function(server_name)
 					require('lspconfig')[server_name].setup({
 						capabilities = capabilities,
-						on_attach = on_attach,
+						flags = { debounce_text_changes = 150 },
+						on_attach = function(client, bufnr)
+							client.server_capabilities.documentFormattingProvider = false
+							client.server_capabilities.documentRangeFormattingProvider = false
+							on_attach(client, bufnr)
+						end,
 					})
 				end,
 				['eslint'] = function()
@@ -303,6 +332,30 @@ require('lazy').setup({
 						}
 					})
 				end,
+			})
+
+			require('null-ls').setup({
+				capabilities = capabilities,
+				flags = { debounce_text_changes = 150 },
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = augroup,
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format({ timeout_ms = 10000 })
+							end,
+						})
+					end
+				end,
+				sources = {
+					require('null-ls').builtins.formatting.prettier.with({
+						only_local = "node_modules/.bin",
+						extra_filetypes = { "svelte" },
+					}),
+				},
 			})
 		end,
 	},
