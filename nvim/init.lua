@@ -201,8 +201,13 @@ require('lazy').setup({
 					disabled_filetypes = {'neo-tree'},
 				},
 				sections = {
-					lualine_a = {'mode'},
-					lualine_b = {'filename'},
+					lualine_a = {{
+						'mode',
+						fmt = function(str)
+							return str:sub(1,1):lower()
+						end
+					}},
+					lualine_b = {{'filename', path = 1}},
 					lualine_c = {'location', 'diagnostics'},
 					lualine_x = {'filetype'},
 					lualine_y = {'diff', 'branch'},
@@ -211,7 +216,7 @@ require('lazy').setup({
 				inactive_sections = {
 					lualine_a = {},
 					lualine_b = {},
-					lualine_c = {'filename'},
+					lualine_c = {{'filename', path = 1}},
 					lualine_x = {'branch'},
 					lualine_y = {},
 					lualine_z = {},
@@ -467,7 +472,5 @@ require('lazy').setup({
 			})
 		end,
 	},
-
 	{ 'folke/which-key.nvim', opts = {} },
-
 })
