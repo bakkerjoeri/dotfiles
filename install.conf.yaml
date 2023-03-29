@@ -5,8 +5,11 @@
     ~/.tmux: tmux
     ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
-    ~/.config/i3:
-        path: i3/
+    ~/.config/sway:
+        path: sway/
+        create: true
+    ~/.config/waybar:
+        path: waybar/
         create: true
     ~/.config/kitty:
         path: kitty/
