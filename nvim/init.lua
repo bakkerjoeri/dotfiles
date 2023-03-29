@@ -198,7 +198,8 @@ require('lazy').setup({
 		config = function()
 			require('lualine').setup({
 				options = {
-					disabled_filetypes = {'neo-tree'},
+					disabled_filetypes = {'neo-tree', 'FTerm'},
+					globalstatus = true,
 				},
 				sections = {
 					lualine_a = {{
@@ -241,11 +242,13 @@ require('lazy').setup({
 						icon = ' ',
 						style = 'icon',
 					},
-					offset = {
-						filetype = 'NeoTree',
-						text = '  Files',
-						highlight = 'BufferlineOffset',
-						text_align = 'left',
+					offsets = {
+						{
+							filetype = 'neo-tree',
+							text = '  Files',
+							text_align = 'left',
+							separator = true,
+						}
 					},
 					separator_style = 'thin',
 					show_buffer_close_icons = false,
@@ -292,7 +295,7 @@ require('lazy').setup({
 				vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>', { buffer = bufnr, desc = 'List references' })
 				vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { buffer = bufnr, desc = 'Hover documentation' })
 				vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
-				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
+				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>', { buffer = bufnr, desc = 'Signature documentation' })
 				vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = bufnr, desc = 'Rename symbol' })
 				vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { buffer = bufnr, desc = 'Code actions' })
 				vim.keymap.set('v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', { buffer = bufnr, desc = 'Code actions on range' })
