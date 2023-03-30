@@ -1,12 +1,23 @@
 * {
-	font-size: 12px;
-	font-family: "Fira Code";
-	font-weight: bold;
+	font-size: 14px;
+	font-family: "FiraCode Nerd Font", "Fira Code", monospace;
+}
+
+button {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+}
+button:hover {
+	border: none;
+	box-shadow: none;
+	background: transparent;
 }
 
 window#waybar {
 	color: white;
-	background-color: rgba(0, 0, 0, 0.7);
+	background: transparent;
+	/* background-color: rgba(40, 42, 54, 1); */
 	margin: 10px;
 }
 
@@ -24,6 +35,7 @@ window#waybar.hidden {
 #network,
 #pulseaudio,
 #wireplumber,
+#workspaces,
 #custom-media,
 #tray,
 #mode,
@@ -31,4 +43,24 @@ window#waybar.hidden {
 #scratchpad,
 #mpd {
 	padding: 0 10px;
+	background-color: rgba(40, 42, 54, 1);
+}
+
+#workspaces {
+	padding: 0;
+}
+
+#workspaces button {
+	color: white;
+	padding: 8px 10px 3px 10px;
+	border-radius: 0;
+	border-bottom: 2px solid transparent;
+}
+
+#workspaces button:hover {
+	background-color: black;
+}
+
+#workspaces button.focused {
+	border-bottom: 2px solid white;
 }

@@ -1,17 +1,65 @@
 {
-    "layer": "top",
+	"layer": "top",
+	"spacing": 10,
 	"margin": "10px 10px 0px 10px",
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["clock"],
-    "modules-right": ["tray", "battery"],
-    "sway/window": {
-        "max-length": 50
-    },
-    "battery": {
-        "format": "{capacity}% {icon}",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "clock": {
-        "format-alt": "{:%a, %d. %b  %H:%M}"
-    }
+	"modules-left": ["sway/workspaces", "sway/mode"],
+	"modules-center": ["clock"],
+	"modules-right": ["tray", "separator", "pulseaudio", "battery", "network"],
+	"sway/window": {
+		"max-length": 50
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{capacity}% {icon}",
+		"format-charging": "{capacity}% ",
+		"format-plugged": "{capacity}% ",
+		"format-alt": "{time} {icon}",
+		"format-good": "{capacity}% {icon}",
+		"format-full": "{capacity}% {icon}",
+		"format-icons": [" ", " ", " ", " ", " "]
+	},
+	"network": {
+		"format-wifi": "{essid} ({signalStrength}%)  ",
+		"format-ethernet": "{ipaddr}/{cidr} ",
+		"tooltip-format": "{ifname} via {gwaddr} ",
+		"format-linked": "{ifname} (No IP) ",
+		"format-disconnected": "Disconnected ⚠",
+		"format-alt": "{ifname}: {ipaddr}/{cidr}"
+	},
+	"pulseaudio": {
+		"scroll-step": 1, // %, can be a float
+		"format": "{icon} {volume}% {format_source}",
+		"format-muted": "{icon} mute {format_source}",
+		"format-source": " {volume}%",
+		"format-bluetooth": "{icon} {volume}% {format_source}",
+		"format-bluetooth-muted": "{icon} mute {format_source}",
+		"format-source-muted": " mute",
+		"format-icons": {
+			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"portable": "",
+			"car": "",
+			"default": [
+				"",
+				"",
+				""
+			]
+		},
+		"on-click": "pavucontrol"
+	},
+	"clock": {
+		"tooltip": true,
+		"interval": 1,
+		"tooltip-format": "{:%Y %B}\n{calendar}",
+		"format": "{:%a %d %B %H:%M}"
+	},
+	"tray": {
+		"spacing": 10
+	}
 }
