@@ -3,18 +3,16 @@ set $term kitty
 set $menu exec $term --class launcher -e ~/.local/sway-launcher-desktop/sway-launcher-desktop.sh
 set $screenshot_path "~/Pictures/Screenshots"
 
-# Theme
-set $cl_high #ff79c6
-set $cl_indi #d9d8d8
-set $cl_back #231f20
-set $cl_fore #d9d8d8
-set $cl_urge #ee2e24
+# Startup
+exec swaync
+exec wal -R
 
-# client                border   bg       text     indi     childborder
-client.focused          $cl_high $cl_high $cl_fore $cl_indi $cl_high
-client.focused_inactive $cl_back $cl_back $cl_fore $cl_back $cl_back
-client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
-client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
+# Theme
+include "$HOME/.cache/wal/colors-sway"
+
+# client                border      bg          text        indi    childborder
+client.focused          $color2     $background $foreground $color7 $color4
+client.unfocused        $background $background $foreground $color7 $background
 
 default_border pixel 1
 default_floating_border normal
@@ -45,6 +43,7 @@ input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
 
 # Set up launcher
 for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 20 ppt 40 ppt, border pixel 1
+for_window [app_id="^org.gnome.Settings$"] floating enable, sticky enable, resize set 60 ppt 60 ppt, border pixel 1
 bindsym $mod+d exec $menu
 
 # Multimedia
@@ -64,13 +63,13 @@ bindsym $mod+Return exec $term
 
 # Screenshots
 # Take a screenshot with all output and save it into screenshots
-bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy -t image/png
+bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
 
 # Take a Screenshot with the region select
-bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy -t image/png
+bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
 
 # Take a screenshot of the currently focused container
-bindsym $mod+Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy -t image/png
+bindsym $mod+Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
 
 
 floating_modifier $mod normal

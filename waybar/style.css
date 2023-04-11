@@ -14,10 +14,20 @@ button:hover {
 	background: transparent;
 }
 
+.modules-left, 
+.modules-center,
+.modules-right {
+	/* background-color: rgba(40, 42, 54, 0.6); */
+}
+
+.widget {
+	border: 1px solid red;
+}
+
 window#waybar {
 	color: white;
 	background: transparent;
-	/* background-color: rgba(40, 42, 54, 1); */
+	/* background-color: rgba(40, 42, 54, 0.6); */
 	margin: 10px;
 }
 
@@ -36,14 +46,24 @@ window#waybar.hidden {
 #pulseaudio,
 #wireplumber,
 #workspaces,
+#window,
 #custom-media,
 #tray,
 #mode,
 #idle_inhibitor,
 #scratchpad,
+#custom-notification,
 #mpd {
 	padding: 0 10px;
-	background-color: rgba(40, 42, 54, 1);
+	background-color: rgba(40, 42, 54, 0.6);
+}
+
+#network {
+	padding-right: 5px;
+}
+
+#custom-notification {
+	padding: 0 13px 0 10px;
 }
 
 #workspaces {

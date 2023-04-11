@@ -103,12 +103,6 @@ require('lazy').setup({
 	'tpope/vim-sleuth',
 	'chaoren/vim-wordmotion',
 	{
-		'dracula/vim',
-		config = function()
-			vim.cmd.colorscheme 'dracula'
-		end,
-	},
-	{
 		'nvim-telescope/telescope.nvim',
 		version = '*',
 		dependencies = { 'nvim-lua/plenary.nvim' },
@@ -235,7 +229,6 @@ require('lazy').setup({
 			{ 'gb', '<cmd>BufferLinePick<CR>', desc = 'Go to buffer...' },
 		},
 		config = function()
-			vim.opt.termguicolors = true
 			require('bufferline').setup({
 				options = {
 					indicator = {
@@ -476,4 +469,15 @@ require('lazy').setup({
 		end,
 	},
 	{ 'folke/which-key.nvim', opts = {} },
+	-- Themes
+	'dracula/vim',
+	'nyoom-engineering/oxocarbon.nvim',
+	{ 'rose-pine/neovim', name = 'rose-pine' },
+	{ "catppuccin/nvim", name = "catppuccin" },
 })
+
+-- Set theme
+vim.cmd.colorscheme 'dracula'
+
+
+

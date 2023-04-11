@@ -8,6 +8,12 @@
     ~/.config/sway:
         path: sway/
         create: true
+    ~/.config/swaync:
+        path: swaync/
+        create: true
+    ~/.config/wal:
+        path: wal/
+        create: true
     ~/.config/waybar:
         path: waybar/
         create: true
