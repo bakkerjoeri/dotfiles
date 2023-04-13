@@ -1,8 +1,9 @@
+@import url("../../.cache/wal/colors-waybar.css");
+
 /*
  * vim: ft=less
  */
-
-@define-color cc-bg rgba(40, 42, 54, 1);
+@define-color cc-bg @background;
 @define-color noti-border-color rgba(255, 255, 255, 0.15);
 @define-color noti-bg rgb(48, 48, 48);
 @define-color noti-bg-hover rgb(56, 56, 56);
@@ -15,7 +16,7 @@
 * {
   font-size: 14px;
   font-family: "FiraCode Nerd Font", "Fira Code", monospace;
-  color: white;
+  color: @foreground;
 }
 
 .notification-row {
@@ -67,7 +68,7 @@
   box-shadow: none;
   background: @noti-bg;
   border: 1px solid @noti-border-color;
-  color: white;
+  color: @foreground;
 }
 
 .notification-default-action:hover,
@@ -104,21 +105,21 @@
 .summary {
   font-weight: bold;
   background: transparent;
-  color: white;
+  color: @foreground;
   text-shadow: none;
 }
 
 .time {
   font-weight: 100;
   background: transparent;
-  color: white;
+  color: @foreground;
   text-shadow: none;
   margin-right: 18px;
 }
 
 .body {
   background: transparent;
-  color: white;
+  color: @foreground;
   text-shadow: none;
 }
 

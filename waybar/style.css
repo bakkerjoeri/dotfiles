@@ -1,3 +1,5 @@
+@import url("../../.cache/wal/colors-waybar.css");
+
 * {
 	font-size: 14px;
 	font-family: "FiraCode Nerd Font", "Fira Code", monospace;
@@ -14,20 +16,13 @@ button:hover {
 	background: transparent;
 }
 
-.modules-left, 
-.modules-center,
-.modules-right {
-	/* background-color: rgba(40, 42, 54, 0.6); */
-}
-
 .widget {
 	border: 1px solid red;
 }
 
 window#waybar {
-	color: white;
+	color: @foreground;
 	background: transparent;
-	/* background-color: rgba(40, 42, 54, 0.6); */
 	margin: 10px;
 }
 
@@ -55,7 +50,7 @@ window#waybar.hidden {
 #custom-notification,
 #mpd {
 	padding: 0 10px;
-	background-color: rgba(40, 42, 54, 0.6);
+	background-color: @background;
 }
 
 #network {
@@ -63,7 +58,7 @@ window#waybar.hidden {
 }
 
 #custom-notification {
-	padding: 0 13px 0 10px;
+	padding: 0 11px 0 10px;
 }
 
 #workspaces {
@@ -71,16 +66,28 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-	color: white;
+	color: @foreground;
 	padding: 8px 10px 3px 10px;
 	border-radius: 0;
 	border-bottom: 2px solid transparent;
 }
 
 #workspaces button:hover {
-	background-color: black;
+	background-color: inherit;
 }
 
 #workspaces button.focused {
-	border-bottom: 2px solid white;
+	border-bottom: 2px solid @foreground;
+}
+
+tooltip {
+	border-radius: 0;
+	background-color: @background;
+}
+
+tooltip label {
+	color: @foreground;
+	font-size: 14px;
+	font-family: "FiraCode Nerd Font", "Fira Code", monospace;
+	text-shadow: none;
 }

@@ -43,8 +43,8 @@
 		"format": "{icon} {volume}%",
 		"format-muted": "󰖁 mute",
 		"format-source": "",
-		"format-bluetooth": "{icon}",
-		"format-bluetooth-muted": "{icon}",
+		"format-bluetooth": "{icon} {volume}%",
+		"format-bluetooth-muted": "{icon} mute",
 		"format-source-muted": "",
 		"format-icons": {
 			"headphone": "󰋋",
@@ -74,14 +74,14 @@
 	"custom/notification": {
 		"format": "{icon}",
 		"format-icons": {
-			"notification": "",
-			"none": "",
-			"dnd-notification": "",
-			"dnd-none": "",
-			"inhibited-notification": "",
-			"inhibited-none": "",
-			"dnd-inhibited-notification": "",
-			"dnd-inhibited-none": ""
+			"notification": "󰂚",
+			"none": "󰂜",
+			"dnd-notification": "󰂛",
+			"dnd-none": "󰂛",
+			"inhibited-notification": "󰂚",
+			"inhibited-none": "󰂜",
+			"dnd-inhibited-notification": "󰂛",
+			"dnd-inhibited-none": "󰂛"
 		},
 		"return-type": "json",
 		"exec-if": "which swaync-client",

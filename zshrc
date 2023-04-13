@@ -10,37 +10,25 @@ fi
 source <(antibody init)
 
 ## Setup env var for oh-my-zsh plugins
-antibody bundle ohmyzsh/ohmyzsh
-antibody bundle ohmyzsh/ohmyzsh path:plugins/cp
-antibody bundle ohmyzsh/ohmyzsh path:plugins/git
-antibody bundle ohmyzsh/ohmyzsh path:plugins/npm
-antibody bundle ohmyzsh/ohmyzsh path:plugins/nvm
-antibody bundle ohmyzsh/ohmyzsh path:plugins/ssh-agent
-antibody bundle ohmyzsh/ohmyzsh path:plugins/vi-mode
-antibody bundle ohmyzsh/ohmyzsh path:plugins/z
 antibody bundle zsh-users/zsh-syntax-highlighting
 antibody bundle romkatv/powerlevel10k
 
-# Plugin config
-zstyle :omz:plugins:ssh-agent quiet yes
-
-# Configuration
-HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="false"
-COMPLETION_WAITING_DOTS="true"
-HIST_STAMPS="yyyy-mm-dd"
-
 # Aliases
 alias vim="nvim"
+alias ncspot="flatpak run io.github.hrkfdn.ncspot"
 
-# Open vim with z argument
-v() {
-    if [ -n "$1" ]; then
-        z $1
-    fi
+# Autocompletion
+autoload -U compinit && compinit
 
-    nvim
-}
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_APPEND
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
 
 # Use open as an alias for xdg-open
 open () {
@@ -53,7 +41,29 @@ export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
 # Import pywal theme
-cat ~/.cache/wal/sequences
+(cat ~/.cache/wal/sequences &)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Starts ssh-agent
+SSH_ENV="$HOME/.ssh/agent-environment"
+
+function start_agent {
+	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+	echo "Successfully initialized new SSH agent"
+	chmod 600 "${SSH_ENV}"
+	. "${SSH_ENV}" > /dev/null
+	/usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+	. "${SSH_ENV}" > /dev/null
+	#ps ${SSH_AGENT_PID} doesn't work under cywgin
+	ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+		start_agent;
+	}
+else
+	start_agent;
+fi

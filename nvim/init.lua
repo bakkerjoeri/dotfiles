@@ -130,7 +130,7 @@ require('lazy').setup({
 			end, { desc = "Find in current buffer"})
 			vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 'Resume last search'})
 			vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Find files by content'})
-			vim.keymap.set('n', '<leader>fF', require('telescope.builtin').live_grep, { desc = 'Find files by content'})
+			vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, { desc = 'Find files by content'})
 			vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = 'Find current word'})
 			vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = 'Find buffers'})
 			vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = 'Find diagnostics'})
@@ -192,8 +192,7 @@ require('lazy').setup({
 		config = function()
 			require('lualine').setup({
 				options = {
-					disabled_filetypes = {'neo-tree', 'FTerm'},
-					globalstatus = true,
+					disabled_filetypes = {'neo-tree', 'toggleterm'},
 				},
 				sections = {
 					lualine_a = {{
@@ -259,6 +258,7 @@ require('lazy').setup({
 			{ '<Leader>q', ':Sayonara!<CR>', desc = 'Close current buffer' },
 		},
 	},
+	'jxnblk/vim-mdx-js',
 	{
 		-- LSP
 		'neovim/nvim-lspconfig',
@@ -334,7 +334,12 @@ require('lazy').setup({
 						capabilities = capabilities,
 						flags = { debounce_text_changes = 150 },
 						on_attach = function(client, bufnr)
-							vim.cmd("autocmd BufWritePre <buffer> EslintFixAll")
+							if client.supports_method("textDocument/formatting") then
+								vim.api.nvim_create_autocmd("BufWritePre", {
+									buffer = bufnr,
+									command = "EslintFixAll"
+								})
+							end
 							on_attach(client, bufnr)
 						end,
 						filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
@@ -362,21 +367,22 @@ require('lazy').setup({
 				end,
 			})
 
+			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 			require('null-ls').setup({
 				capabilities = capabilities,
 				flags = { debounce_text_changes = 150 },
 				on_attach = function(client, bufnr)
 					if client.supports_method("textDocument/formatting") then
-						local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
-								vim.lsp.buf.format({ timeout_ms = 10000 })
+								vim.lsp.buf.format({ bufnr = bufnr })
 							end,
 						})
 					end
+					on_attach(client, bufnr)
 				end,
 				sources = {
 					require('null-ls').builtins.formatting.prettier.with({
@@ -452,20 +458,32 @@ require('lazy').setup({
 		end,
 	},
 	{
-		'numToStr/FTerm.nvim',
-		keys = {
-			{ '<leader><CR>', '<CMD>lua require("FTerm").toggle()<CR>' },
-			{ '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>' },
-			{ '<A-i>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', mode = 't' },
-		},
+		'akinsho/toggleterm.nvim',
+		version = "*",
 		config = function()
-			require('FTerm').setup({
-				dimensions = {
+			require('toggleterm').setup({})
+			local Terminal = require('toggleterm.terminal').Terminal
+			local lazygit = Terminal:new({ cmd = "lazygit", hidden = true, direction = "float" })
+			function LazygitToggle()
+				lazygit:toggle()
+			end
 
-					width = 0.9,
-					height = 0.9
-				},
-			})
+			keymap('n', '<A-i>', '<CMD>ToggleTerm direction=horizontal<CR>', { desc = 'Toggle terminal' })
+			keymap('t', '<A-i>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
+			keymap('t', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
+
+			function _G.set_terminal_keymaps()
+				local opts = {buffer = 0}
+				vim.keymap.set('t', '<A-h>', [[<Cmd>wincmd h<CR>]], opts)
+				vim.keymap.set('t', '<A-j>', [[<Cmd>wincmd j<CR>]], opts)
+				vim.keymap.set('t', '<A-k>', [[<Cmd>wincmd k<CR>]], opts)
+				vim.keymap.set('t', '<A-l>', [[<Cmd>wincmd l<CR>]], opts)
+			end
+
+			-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
 		end,
 	},
 	{ 'folke/which-key.nvim', opts = {} },
@@ -474,6 +492,7 @@ require('lazy').setup({
 	'nyoom-engineering/oxocarbon.nvim',
 	{ 'rose-pine/neovim', name = 'rose-pine' },
 	{ "catppuccin/nvim", name = "catppuccin" },
+	{ 'AlphaTechnolog/pywal.nvim', name = 'pywal' }
 })
 
 -- Set theme
