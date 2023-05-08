@@ -5,9 +5,11 @@
     ~/.tmux: tmux
     ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
-    ~/.bashrc: bashrc
     ~/.config/sway:
         path: sway/
+        create: true
+    ~/.config/rofi:
+        path: rofi/
         create: true
     ~/.config/swaync:
         path: swaync/

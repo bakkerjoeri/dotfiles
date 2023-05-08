@@ -39,7 +39,9 @@ input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
     click_method clickfinger
 }
 
-## Key bindings
+input "type:keyboard" {
+    xkb_options compose:ralt,caps:escape
+}
 
 ## Key bindings
 # Menu

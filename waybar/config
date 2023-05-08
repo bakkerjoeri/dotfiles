@@ -35,8 +35,7 @@
 			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
 			"ethernet": ["󰈁"],
 			"disconnected": ["󰤭 "]
-		},
-		"on-click": "gnome-control-center wifi"
+		}
 	},
 	"pulseaudio": {
 		"scroll-step": 1, // %, can be a float
@@ -58,8 +57,7 @@
 				"󰖀",
 				"󰕾"
 			]
-		},
-		"on-click": "gnome-control-center sound"
+		}
 	},
 	"clock": {
 		"tooltip": true,

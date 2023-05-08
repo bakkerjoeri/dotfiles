@@ -45,10 +45,11 @@
     }
   },
   "widgets": [
+    "mpris",
     "inhibitors",
     "title",
-    "dnd",
-    "notifications"
+    "notifications",
+    "dnd"
   ],
   "widget-config": {
     "inhibitors": {
