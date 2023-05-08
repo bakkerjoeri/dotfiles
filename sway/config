@@ -1,6 +1,6 @@
 # Values
 set $term kitty
-set $menu exec $term --class launcher -e ~/.local/sway-launcher-desktop/sway-launcher-desktop.sh
+set $menu 'rofi -mode run,drun -show drun'
 set $screenshot_path "~/Pictures/Screenshots"
 
 # Startup
@@ -41,9 +41,8 @@ input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
 
 ## Key bindings
 
-# Set up launcher
-for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 20 ppt 40 ppt, border pixel 1
-for_window [app_id="^org.gnome.Settings$"] floating enable, sticky enable, resize set 60 ppt 60 ppt, border pixel 1
+## Key bindings
+# Menu
 bindsym $mod+d exec $menu
 
 # Multimedia
