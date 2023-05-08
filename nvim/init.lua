@@ -279,6 +279,7 @@ require('lazy').setup({
 
 			local on_attach = function(_, bufnr)
 				vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+					vim.cmd("EslintFixAll")
 					vim.lsp.buf.format()
 				end, { desc = 'Format current buffer with LSP' })
 
@@ -290,6 +291,7 @@ require('lazy').setup({
 				vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
 				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>', { buffer = bufnr, desc = 'Signature documentation' })
 				vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = bufnr, desc = 'Rename symbol' })
+				vim.keymap.set('n', '<leader>rf', '<cmd>Format<CR>', { buffer = bufnr, desc = 'Format buffer' })
 				vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { buffer = bufnr, desc = 'Code actions' })
 				vim.keymap.set('v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', { buffer = bufnr, desc = 'Code actions on range' })
 			end
@@ -334,12 +336,10 @@ require('lazy').setup({
 						capabilities = capabilities,
 						flags = { debounce_text_changes = 150 },
 						on_attach = function(client, bufnr)
-							if client.supports_method("textDocument/formatting") then
-								vim.api.nvim_create_autocmd("BufWritePre", {
-									buffer = bufnr,
-									command = "EslintFixAll"
-								})
-							end
+							vim.api.nvim_create_autocmd("BufWritePre", {
+								buffer = bufnr,
+								command = "EslintFixAll"
+							})
 							on_attach(client, bufnr)
 						end,
 						filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
@@ -373,7 +373,7 @@ require('lazy').setup({
 				flags = { debounce_text_changes = 150 },
 				on_attach = function(client, bufnr)
 					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+						-- vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							group = augroup,
 							buffer = bufnr,
