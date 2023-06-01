@@ -2,7 +2,6 @@
 
 - link:
     ~/.gitconfig: gitconfig
-    ~/.zshrc: zshrc
     ~/.config/sway:
         path: sway/
         create: true
@@ -25,3 +24,5 @@
         path: nvim/
         create: true
     ~/.huskyrc: huskyrc
+    ~/.profile: profile
+    ~/.zshrc: zshrc
