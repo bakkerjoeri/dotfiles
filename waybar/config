@@ -4,7 +4,7 @@
 	"margin": "10px 10px 0px 10px",
 	"modules-left": ["sway/workspaces", "sway/mode"],
 	"modules-center": ["clock"],
-	"modules-right": ["tray", "pulseaudio", "battery", "network", "custom/notification"],
+	"modules-right": ["tray", "pulseaudio", "battery", "network", "custom/notification", "custom/power"],
 	"sway/window": {
 		"format": "{app_id}",
 		"max-length": 50,
@@ -35,7 +35,8 @@
 			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
 			"ethernet": ["󰈁"],
 			"disconnected": ["󰤭 "]
-		}
+		},
+		"on-click": "~/.local/bin/wifimenu",
 	},
 	"pulseaudio": {
 		"scroll-step": 1, // %, can be a float
@@ -57,7 +58,8 @@
 				"󰖀",
 				"󰕾"
 			]
-		}
+		},
+		"on-click": "pavucontrol"
 	},
 	"clock": {
 		"tooltip": true,
@@ -87,5 +89,10 @@
 		"on-click": "swaync-client -t -sw",
 		"on-click-right": "swaync-client -d -sw",
 		"escape": true
+	},
+	"custom/power": {
+		"format": "",
+		"on-click": "~/.local/bin/powermenu",
+		"tooltip": false
 	}
 }

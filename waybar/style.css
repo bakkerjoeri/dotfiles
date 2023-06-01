@@ -48,17 +48,24 @@ window#waybar.hidden {
 #idle_inhibitor,
 #scratchpad,
 #custom-notification,
+#custom-power,
 #mpd {
 	padding: 0 10px;
-	background-color: @background;
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
 #network {
-	padding-right: 5px;
+	padding-left: 11px;
+	padding-right: 7px;
 }
 
 #custom-notification {
-	padding: 0 11px 0 10px;
+	padding: 0 14px 0 13px;
+}
+
+#custom-power {
+	padding-left: 11px;
+	padding-right: 15px;
 }
 
 #workspaces {

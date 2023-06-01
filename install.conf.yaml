@@ -1,21 +1,8 @@
 - clean: ['~']
 
 - link:
-    ~/.gitconfig: gitconfig
-    ~/.config/sway:
-        path: sway/
-        create: true
-    ~/.config/rofi:
-        path: rofi/
-        create: true
-    ~/.config/swaync:
-        path: swaync/
-        create: true
-    ~/.config/wal:
-        path: wal/
-        create: true
-    ~/.config/waybar:
-        path: waybar/
+    ~/.local/bin:
+        path: bin/
         create: true
     ~/.config/kitty:
         path: kitty/
@@ -23,6 +10,28 @@
     ~/.config/nvim:
         path: nvim/
         create: true
+    ~/.config/rofi:
+        path: rofi/
+        create: true
+    ~/.config/sway:
+        path: sway/
+        create: true
+    ~/.config/swaylock:
+        path: swaylock/
+        create: true
+    ~/.config/swaync:
+        path: swaync/
+        create: true
+    ~/.config/wal:
+        path: wal/
+        create: true
+    ~/.wallpapers:
+        path: wallpapers/
+        create: true
+    ~/.config/waybar:
+        path: waybar/
+        create: true
+    ~/.gitconfig: gitconfig
     ~/.huskyrc: huskyrc
     ~/.profile: profile
     ~/.zshrc: zshrc

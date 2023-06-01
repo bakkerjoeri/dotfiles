@@ -1,11 +1,17 @@
 # Values
 set $term kitty
-set $menu 'rofi -mode run,drun -show drun'
+set $browser firefox
+set $menu 'rofi -mode run,drun -show drun -sorting-method fzf -matching fuzzy -sort'
+set $emoji_menu rofimoji
+set $power_menu ~/.local/bin/powermenu
+set $wifi_menu  ~/.local/bin/wifimenu
+set $bluetooth_menu  ~/.local/bin/bluetooth
 set $screenshot_path "~/Pictures/Screenshots"
 
 # Startup
 exec swaync
 exec wal -R
+exec "$HOME/.cargo/bin/swaycons"
 
 # Theme
 include "$HOME/.cache/wal/colors-sway"
@@ -16,10 +22,9 @@ client.unfocused        $background $background $foreground $color7 $background
 
 default_border pixel 1
 default_floating_border normal
-
 gaps inner 10
-
 focus_follows_mouse no
+font pango:FiraCode Nerd Font 10
 
 set $mod Mod4
 
@@ -43,9 +48,31 @@ input "type:keyboard" {
     xkb_options compose:ralt,caps:escape
 }
 
+## Lockscreen
+bindsym $mod+Shift+Escape exec ~/.local/bin/lockscreen
+
+for_window [class="^.*"] inhibit_idle fullscreen
+for_window [app_id="^.*"] inhibit_idle fullscreen
+
+### Idle configuration
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+set $lock_bg `find $HOME/.wallpapers/ -type f | shuf -n 1`
+exec swayidle -w \
+         timeout 300 'swaylock --hide-keyboard-layout -f -c 000000 -i $lock_bg' \
+         timeout 600 'swaymsg "output * power off"' \
+         resume 'swaymsg "output * power on"' \
+         after-resume 'swaymsg "output * enable"' \
+         before-sleep 'swaylock --hide-keyboard-layout -f -c 000000 -i $lock_bg'
+
 ## Key bindings
-# Menu
+# Menu's
 bindsym $mod+d exec $menu
+bindsym $mod+Colon exec $emoji_menu
+bindsym $mod+w exec $wifi_menu
+bindsym $mod+p exec $power_menu
+bindsym $mod+b exec $bluetooth_menu
 
 # Multimedia
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -61,6 +88,9 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%-
 
 # Start a terminal
 bindsym $mod+Return exec $term
+
+# Start a browser
+bindsym $mod+Shift+Return exec $browser
 
 # Screenshots
 # Take a screenshot with all output and save it into screenshots
@@ -108,6 +138,11 @@ bindsym $mod+Control+Shift+Down move workspace to output down
 bindsym $mod+Control+Shift+Up move workspace to output up
 bindsym $mod+Control+Shift+Right move workspace to output right
 
+# Creating new workspaces
+bindsym $mod+n exec ~/.cargo/bin/sway-new-workspace open
+bindsym $mod+Shift+n exec ~/.cargo/bin/sway-new-workspace move
+bindsym $mod+Shift+d exec ~/.cargo/bin/sway-new-workspace open; exec $menu
+
 # Change to workspace
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
@@ -132,11 +167,8 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-bindsym $mod+b splith
-bindsym $mod+v splitv
-
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 bindsym $mod+f fullscreen
@@ -144,7 +176,7 @@ bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
-#
+
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
@@ -170,14 +202,21 @@ bar {
     position top
 }
 
-# Zoom config
-# Default for all windows is non-floating.
-# For pop up notification windows that don't use notifications api
+# Floating containers
+## Zoom container config
+### Default for all windows is non-floating.
+### For pop up notification windows that don't use notifications api
 for_window [app_id="zoom" title="^zoom$"] border none, floating enable
-# For specific Zoom windows
+### For specific Zoom windows
 for_window [app_id="zoom" title="^(Zoom|About)$"] border pixel, floating enable
 for_window [app_id="zoom" title="Settings"] floating enable, floating_minimum_size 960 x 700
-# Open Zoom Meeting windows on a new workspace (a bit hacky)
+### Open Zoom Meeting windows on a new workspace (a bit hacky)
 for_window [app_id="zoom" title="Zoom Meeting(.*)?"] workspace next_on_output --create, move container to workspace current, floating disable, inhibit_idle open
+
+## PulseAudioControl
+for_window [app_id="pavucontrol"] border none, floating enable
+
+## Bluetooth Manager
+for_window [app_id="blueman-manager"] border none, floating enable
 
 include /etc/sway/config.d/*
