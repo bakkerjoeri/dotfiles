@@ -1,6 +1,7 @@
 - clean: ['~']
 
 - link:
+    ~/.bash_profile: bash_profile
     ~/.local/bin:
         path: bin/
         create: true
