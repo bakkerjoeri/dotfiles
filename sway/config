@@ -71,7 +71,7 @@ exec swayidle -w \
 bindsym $mod+d exec $menu
 bindsym $mod+Colon exec $emoji_menu
 bindsym $mod+w exec $wifi_menu
-bindsym $mod+p exec $power_menu
+bindsym $mod+Shift+e exec $power_menu
 bindsym $mod+b exec $bluetooth_menu
 
 # Multimedia
@@ -92,6 +92,8 @@ bindsym $mod+Return exec $term
 # Start a browser
 bindsym $mod+Shift+Return exec $browser
 
+# Start a new note
+bindsym $mod+Mod1+Return exec $new_note
 # Screenshots
 # Take a screenshot with all output and save it into screenshots
 bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
@@ -106,7 +108,6 @@ bindsym $mod+Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | selec
 floating_modifier $mod normal
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 # Move focus
 bindsym $mod+$left focus left
