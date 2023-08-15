@@ -4,7 +4,7 @@
 	"margin": "10px 10px 0px 10px",
 	"modules-left": ["sway/workspaces", "sway/mode"],
 	"modules-center": ["clock"],
-	"modules-right": ["tray", "pulseaudio", "battery", "network", "custom/notification", "custom/power"],
+	"modules-right": ["tray", "pulseaudio", "battery", "network"],
 	"sway/window": {
 		"format": "{app_id}",
 		"max-length": 50,
@@ -63,8 +63,8 @@
 	},
 	"clock": {
 		"tooltip": true,
-		"interval": 1,
-		"tooltip-format": "{:%Y %B}\n{calendar}",
+		"interval": 10,
+		"tooltip-format": "{calendar}",
 		"format": "{:%a %d %B %H:%M}"
 	},
 	"tray": {

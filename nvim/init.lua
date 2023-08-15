@@ -1,3 +1,5 @@
+
+
 -- Key bindings
 local keymap = require 'lib.keymap'
 
@@ -60,12 +62,12 @@ vim.o.tabstop = 4
 vim.o.signcolumn = 'yes:2'
 vim.o.relativenumber = true
 vim.o.termguicolors = true
+vim.o.clipboard = 'unnamedplus'
 vim.o.title = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.number = true
 vim.o.splitright = true
-vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 vim.o.linebreak = true
 vim.o.list = true
@@ -83,16 +85,9 @@ install_lazy()
 
 require('lazy').setup({
 	{
-		'jiangmiao/auto-pairs',
-		config = function()
-			vim.cmd([[
-				let g:AutoPairs = AutoPairsDefine({'<': '>'})
-			]])
-
-			vim.g.AutoPairsMapCR = false
-			vim.g.AutoPairsCenterLine = false
-			vim.g.AutoPairsCenterLine = false
-		end
+		'windwp/nvim-autopairs',
+		event = "InsertEnter",
+		opts = {}
 	},
 	'dkarter/bullets.vim',
 	'tpope/vim-commentary',
@@ -266,7 +261,7 @@ require('lazy').setup({
 			'jose-elias-alvarez/null-ls.nvim',
 			'williamboman/mason.nvim',
 			'williamboman/mason-lspconfig.nvim',
-			{ 'j-hui/fidget.nvim', opts = {} },
+			{ 'j-hui/fidget.nvim', opts = {}, tag = 'legacy' },
 			'folke/neodev.nvim',
 			'simrat39/rust-tools.nvim',
 			'hrsh7th/cmp-nvim-lsp',
@@ -463,12 +458,12 @@ require('lazy').setup({
 		config = function()
 			require('toggleterm').setup({})
 			local Terminal = require('toggleterm.terminal').Terminal
-			local lazygit = Terminal:new({ cmd = "lazygit", hidden = true, direction = "float" })
+			local lazygit = Terminal:new({ cmd = "lazygit", hidden = true, direction = "float", count = 99 })
 			function LazygitToggle()
 				lazygit:toggle()
 			end
 
-			keymap('n', '<A-i>', '<CMD>ToggleTerm direction=horizontal<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<A-i>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
 			keymap('t', '<A-i>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
 			keymap('n', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
 			keymap('t', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })

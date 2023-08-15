@@ -12,4 +12,6 @@ fi
 
 filename="$(date '+%Y-%m-%d').md"
 filepath="$NOTES/$filename"
+
+cd $NOTES
 exec $EDITOR $filepath

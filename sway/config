@@ -2,16 +2,20 @@
 set $term kitty
 set $browser firefox
 set $menu 'rofi -mode run,drun -show drun -sorting-method fzf -matching fuzzy -sort'
+set $new_note note
 set $emoji_menu rofimoji
-set $power_menu ~/.local/bin/powermenu
-set $wifi_menu  ~/.local/bin/wifimenu
-set $bluetooth_menu  ~/.local/bin/bluetooth
+set $power_menu powermenu
+set $wifi_menu  wifimenu
+set $bluetooth_menu  bluetooth
 set $screenshot_path "~/Pictures/Screenshots"
 
 # Startup
 exec swaync
 exec wal -R
 exec "$HOME/.cargo/bin/swaycons"
+
+## Set up clipman
+exec wl-paste --type text --watch clipman store --no-persist
 
 # Theme
 include "$HOME/.cache/wal/colors-sway"
@@ -34,8 +38,8 @@ set $up k
 set $right l
 
 output * bg `find $HOME/.wallpapers/ -type f | shuf -n 1` fill
-output eDP-1 pos 1920 320 res 2256x1504 scale 1.25
-output DP-1 pos 0 0 res 1920x1080 scale 1
+output eDP-1 pos 0 0 res 2256x1504 scale 1.25
+# output DP-1 pos 1920 320 res 1920x1080 scale 1
 
 ### Input configuration
 input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
@@ -71,8 +75,9 @@ exec swayidle -w \
 bindsym $mod+d exec $menu
 bindsym $mod+Colon exec $emoji_menu
 bindsym $mod+w exec $wifi_menu
-bindsym $mod+Shift+e exec $power_menu
+bindsym $mod+Shift+e exec $power_menu 
 bindsym $mod+b exec $bluetooth_menu
+bindsym $mod+p exec clipman pick -t rofi 
 
 # Multimedia
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -90,10 +95,11 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym $mod+Return exec $term
 
 # Start a browser
-bindsym $mod+Shift+Return exec $browser
+# bindsym $mod+Shift+Return exec $browser
 
 # Start a new note
-bindsym $mod+Mod1+Return exec $new_note
+bindsym $mod+Shift+Return exec $term -e ~/.local/bin/note
+
 # Screenshots
 # Take a screenshot with all output and save it into screenshots
 bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
@@ -219,5 +225,3 @@ for_window [app_id="pavucontrol"] border none, floating enable
 
 ## Bluetooth Manager
 for_window [app_id="blueman-manager"] border none, floating enable
-
-include /etc/sway/config.d/*
