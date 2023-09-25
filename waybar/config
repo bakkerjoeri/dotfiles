@@ -36,7 +36,7 @@
 			"ethernet": ["󰈁"],
 			"disconnected": ["󰤭 "]
 		},
-		"on-click": "~/.local/bin/wifimenu",
+		"on-click": "wifimenu",
 	},
 	"pulseaudio": {
 		"scroll-step": 1, // %, can be a float
@@ -92,7 +92,7 @@
 	},
 	"custom/power": {
 		"format": "",
-		"on-click": "~/.local/bin/powermenu",
+		"on-click": "powermenu",
 		"tooltip": false
 	}
 }

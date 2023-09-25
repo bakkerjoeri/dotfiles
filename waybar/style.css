@@ -87,6 +87,10 @@ window#waybar.hidden {
 	border-bottom: 2px solid @foreground;
 }
 
+#workspaces button.urgent {
+	border-bottom: 2px solid @color4;
+}
+
 tooltip {
 	border-radius: 0;
 	background-color: @background;
