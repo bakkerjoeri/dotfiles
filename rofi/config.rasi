@@ -1,7 +1,19 @@
 configuration {
-    show-icons:      false;
-    display-drun:    "";
+	modes: "drun,run,window,filebrowser,ssh";
+    show-icons: false;
+    display-run: " ";
+    display-drun: " ";
+	display-window: " ";
+	display-ssh: " ";
+	display-filebrowser: " ";
+	display-keys: " ";
+	display-script: "󰑷 ";
+	display-combi: "";
     disable-history: false;
+}
+
+entry {
+	placeholder: "";
 }
 
 @import "theme"
