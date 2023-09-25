@@ -1,0 +1,3 @@
+#!/bin/bash
+file=$(fzf)
+setsid /bin/sh -c "xdg-open \"${file}\"" >&/dev/null &
