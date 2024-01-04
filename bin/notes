@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ -z "$NOTES" ]]; then
+    echo "NOTES is not set"
+    exit 1
+fi
+
+if [[ -z "$EDITOR" ]]; then
+    echo "EDITOR is not set"
+    exit 1
+fi
+
+cd $NOTES
+exec $EDITOR
