@@ -9,6 +9,7 @@ set $emoji_menu rofimoji
 set $power_menu powermenu
 set $wifi_menu  wifimenu
 set $bluetooth_menu  bluetooth
+set $screenshot screenshot
 set $screenshot_path "~/Pictures/Screenshots"
 
 # Startup
@@ -112,15 +113,7 @@ bindsym $mod+Period exec $new_note
 bindsym $mod+Slash exec $finder
 
 # Screenshots
-# Take a screenshot with all output and save it into screenshots
-bindsym Print exec grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
-
-# Take a Screenshot with the region select
-bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
-
-# Take a screenshot of the currently focused container
-bindsym $mod+Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png | wl-copy
-
+bindsym Print exec $screenshot
 
 floating_modifier $mod normal
 bindsym $mod+Shift+q kill
