@@ -1,6 +1,7 @@
 # Values
 set $term kitty
 set $browser firefox
+set $browser_profiles firefox -p
 set $menu 'rofi -show drun -sorting-method fzf -matching fuzzy -sort'
 set $windows 'rofi -show window -sorting-method fzf -matching fuzzy -sort'
 set $finder $term --class finder -e finder
@@ -105,6 +106,7 @@ bindsym $mod+Return exec $term
 
 # Start a browser
 bindsym $mod+Semicolon exec $browser
+bindsym $mod+Alt+Semicolon exec $browser_profiles
 
 # Start a new note
 bindsym $mod+Period exec $new_note
