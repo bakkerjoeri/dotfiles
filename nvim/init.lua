@@ -15,15 +15,15 @@ keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'Clear search highlights' }
 keymap('n', '<leader>sh', '<C-w>s', { desc = 'Split horizontally' })
 keymap('n', '<leader>sv', '<C-w>v', { desc = 'Split vertically' })
 
-keymap('n', '<A-h>', '<C-w>h', { desc = 'Go to the left window' })
-keymap('n', '<A-j>', '<C-w>j', { desc = 'Go to the down window ' })
-keymap('n', '<A-k>', '<C-w>k', { desc = 'Go to the up window' })
-keymap('n', '<A-l>', '<C-w>l', { desc = 'Go to the right window' })
+keymap('n', '<C-h>', '<C-w>h', { desc = 'Go to the left window' })
+keymap('n', '<C-j>', '<C-w>j', { desc = 'Go to the down window ' })
+keymap('n', '<C-k>', '<C-w>k', { desc = 'Go to the up window' })
+keymap('n', '<C-l>', '<C-w>l', { desc = 'Go to the right window' })
 
-keymap('n', '<A-H>', '<C-w><', { desc = 'Decrease width' })
-keymap('n', '<A-L>', '<C-w>>', { desc = 'Increase width' })
-keymap('n', '<A-J>', '<C-w>-', { desc = 'Decrease height' })
-keymap('n', '<A-K>', '<C-w>+', { desc = 'Increase height' })
+keymap('n', '<C-S-H>', '<C-w><', { desc = 'Decrease width' })
+keymap('n', '<C-S-L>', '<C-w>>', { desc = 'Increase width' })
+keymap('n', '<C-S-J>', '<C-w>-', { desc = 'Decrease height' })
+keymap('n', '<C-S-K>', '<C-w>+', { desc = 'Increase height' })
 
 keymap('n', '<leader>tn', ':tabnew<CR>', { desc = 'Open a new tab' })
 keymap('n', '<leader>tq', ':tabclose<CR>', { desc = 'Close current tab' })
@@ -39,6 +39,14 @@ keymap('n', '<leader>bj', ':blast<CR>', { desc = 'Go to the last buffer' })
 keymap('n', '<leader>bk', ':bfirst<CR>', { desc = 'Go to the first buffer' })
 keymap('n', '<leader>bl', ':bnext<CR>', { desc = 'Go to the next buffer' })
 keymap('n', '<leader>bq', ':q<CR>', { desc = 'Close current buffer' })
+
+-- Move content up or down
+keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down'});
+keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up'});
+keymap('n', '<A-j>', ':m .+1<CR>==', { desc = 'Move line down'});
+keymap('n', '<A-k>', ':m .-2<CR>==', { desc = 'Move line up'});
+keymap('v', '<A-j>', ":m '>+1<CR>gv-gv", { desc = 'Move block down'});
+keymap('v', '<A-k>', ":m '<-2<CR>gv-gv", { desc = 'Move block up'});
 
 -- Reselect visual selection after indenting
 keymap('v', '<', '<gv')
@@ -405,6 +413,13 @@ require('lazy').setup({
 		config = function()
 			local cmp = require('cmp')
 			local luasnip = require('luasnip')
+			local cmp_mapping = require "cmp.config.mapping"
+			local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
+			if not status_cmp_ok then
+				return
+			end
+			local ConfirmBehavior = cmp_types.ConfirmBehavior
+			local SelectBehavior = cmp_types.SelectBehavior
 
 			cmp.setup({
 				snippet = {
@@ -412,39 +427,94 @@ require('lazy').setup({
 						luasnip.lsp_expand(args.body)
 					end,
 				},
-				mapping = cmp.mapping.preset.insert({
-					['<C-d>'] = cmp.mapping.scroll_docs(-4),
-					['<C-f>'] = cmp.mapping.scroll_docs(4),
-					['<CR>'] = cmp.mapping.confirm({
-						behavior = cmp.ConfirmBehavior.Replace,
-						select = true,
-					}),
-					['<C-h>'] = cmp.mapping(function()
-						cmp.complete()
-					end, { 'i' }),
-					['<Tab>'] = cmp.mapping(function(fallback)
+				mapping = cmp_mapping.preset.insert {
+					["<C-k>"] = cmp_mapping(cmp_mapping.select_prev_item(), { "i", "c" }),
+					["<C-j>"] = cmp_mapping(cmp_mapping.select_next_item(), { "i", "c" }),
+					["<Down>"] = cmp_mapping(cmp_mapping.select_next_item { behavior = SelectBehavior.Select }, { "i" }),
+					["<Up>"] = cmp_mapping(cmp_mapping.select_prev_item { behavior = SelectBehavior.Select }, { "i" }),
+					["<C-d>"] = cmp_mapping.scroll_docs(-4),
+					["<C-f>"] = cmp_mapping.scroll_docs(4),
+					["<C-y>"] = cmp_mapping {
+						i = cmp_mapping.confirm { behavior = ConfirmBehavior.Replace, select = false },
+						c = function(fallback)
+							if cmp.visible() then
+								cmp.confirm { behavior = ConfirmBehavior.Replace, select = false }
+							else
+								fallback()
+							end
+						end,
+					},
+					["<Tab>"] = cmp_mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
+						elseif luasnip.expand_or_locally_jumpable() then
+							luasnip.expand_or_jump()
+						elseif jumpable(1) then
+							luasnip.jump(1)
+						elseif has_words_before() then
+							-- cmp.complete()
+							fallback()
 						else
 							fallback()
 						end
-					end, { 'i', 's' }),
-					['<S-Tab>'] = cmp.mapping(function(fallback)
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp_mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
 						else
 							fallback()
 						end
-					end, { 'i', 's' }),
-				}),
+					end, { "i", "s" }),
+					["<C-Space>"] = cmp_mapping.complete(),
+					["<C-e>"] = cmp_mapping.abort(),
+					["<CR>"] = cmp_mapping(function(fallback)
+						if cmp.visible() then
+							local confirm_opts = vim.deepcopy(lvim.builtin.cmp.confirm_opts) -- avoid mutating the original opts below
+							local is_insert_mode = function()
+								return vim.api.nvim_get_mode().mode:sub(1, 1) == "i"
+							end
+							if is_insert_mode() then -- prevent overwriting brackets
+								confirm_opts.behavior = ConfirmBehavior.Insert
+							end
+							local entry = cmp.get_selected_entry()
+							local is_copilot = entry and entry.source.name == "copilot"
+							if is_copilot then
+								confirm_opts.behavior = ConfirmBehavior.Replace
+								confirm_opts.select = true
+							end
+							if cmp.confirm(confirm_opts) then
+								return -- success, exit early
+							end
+						end
+						fallback() -- if not exited early, always fallback
+					end),
+				},
 				sources = {
 					{ name = 'nvim_lsp' },
 					{ name = 'nvim_lsp_signature_help' },
 					{ name = 'nvim_lua' },
 					{ name = 'luasnip' },
+					{ name = 'calc' },
+					{ name = 'emoji' },
+					{ name = 'treesitter' },
 					{ name = 'path' },
 					{ name = 'buffer' },
 				},
+				formatting = {
+					source_names = {
+						nvim_lsp = "(LSP)",
+						nvim_lsp_signature_help = "(LSP)",
+						nvim_lua = "(LUA)",
+						emoji = "(Emoji)",
+						path = "(Path)",
+						calc = "(Calc)",
+						luasnip = "(Snippet)",
+						buffer = "(Buffer)",
+						treesitter = "(TreeSitter)",
+					},
+				}
 			})
 		end,
 	},
