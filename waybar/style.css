@@ -49,9 +49,17 @@ window#waybar.hidden {
 #scratchpad,
 #custom-notification,
 #custom-power,
+#user,
 #mpd {
 	padding: 0 10px;
 	background-color: rgba(0, 0, 0, 0.6);
+} 
+
+
+#idle_inhibitor {
+	padding-left: 12px;
+	padding-right: 5px;
+	font-size: 16px;
 }
 
 #network {

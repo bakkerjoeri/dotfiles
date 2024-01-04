@@ -4,7 +4,7 @@
 	"margin": "10px 10px 0px 10px",
 	"modules-left": ["sway/workspaces", "sway/mode"],
 	"modules-center": ["clock"],
-	"modules-right": ["tray", "pulseaudio", "battery", "network"],
+	"modules-right": ["tray", "pulseaudio", "battery", "network", "idle_inhibitor","custom/notification"],
 	"sway/window": {
 		"format": "{app_id}",
 		"max-length": 50,
@@ -66,6 +66,15 @@
 		"interval": 10,
 		"tooltip-format": "{calendar}",
 		"format": "{:%a %d %B %H:%M}"
+	},
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "󰅶 ",
+			"deactivated": "󰛊 "
+		},
+		"tooltip-format-activated": "Staying awake!",
+		"tooltip-format-deactivated": "Want me to stay awake?"
 	},
 	"tray": {
 		"spacing": 10,

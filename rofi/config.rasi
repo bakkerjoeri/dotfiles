@@ -1,5 +1,5 @@
 configuration {
-	modes: "drun,run,window,filebrowser,ssh";
+	modes: "drun,run,window";
     show-icons: false;
     display-run: " ";
     display-drun: " ";
@@ -8,7 +8,8 @@ configuration {
 	display-filebrowser: " ";
 	display-keys: " ";
 	display-script: "󰑷 ";
-	display-combi: "";
+	display-screenshot: " ";
+	display-recording: " ";
     disable-history: false;
 }
 

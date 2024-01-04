@@ -12,4 +12,4 @@ eval "$(pyenv init -)"
 export ANDROID_HOME=$HOME/Android/Sdk
 export ANDROID_AVD_HOME=$HOME/.var/app/com.google.AndroidStudio/config/.android/avd
 export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tool
+export PATH=$PATH:$ANDROID_HOME/platform-tools
