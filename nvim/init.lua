@@ -1,5 +1,3 @@
-
-
 -- Key bindings
 local keymap = require 'lib.keymap'
 
@@ -109,6 +107,8 @@ require('lazy').setup({
 					},
 					sorting_strategy = 'ascending',
 					file_ignore_patterns = { '.git/' },
+					path_display = { 'smart' },
+					dynamic_preview_title = true,
 				},
 				pickers = {
 					find_files = {
@@ -425,8 +425,6 @@ require('lazy').setup({
 					['<Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
-						elseif luasnip.expand_or_jumpable() then
-							luasnip.expand_or_jump()
 						else
 							fallback()
 						end
@@ -434,8 +432,6 @@ require('lazy').setup({
 					['<S-Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
-						elseif luasnip.jumpable(-1) then
-							luasnip.jump(-1)
 						else
 							fallback()
 						end
@@ -464,7 +460,10 @@ require('lazy').setup({
 			end
 
 			keymap('n', '<A-i>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<A-i>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
 			keymap('t', '<A-i>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<A-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
+			keymap('t', '<A-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
 			keymap('n', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
 			keymap('t', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
 
