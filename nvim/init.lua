@@ -334,6 +334,17 @@ require('lazy').setup({
 						end,
 					})
 				end,
+				['lua_ls'] = function()
+					require('lspconfig').lua_ls.setup({
+						settings = {
+							Lua = {
+								diagnostics = {
+									globals = { 'vim' }
+								}
+							}
+						}
+					})
+				end,
 				['eslint'] = function()
 					require('lspconfig').eslint.setup({
 						capabilities = capabilities,
