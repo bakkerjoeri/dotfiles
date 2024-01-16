@@ -235,3 +235,6 @@ for_window [app_id="pavucontrol"] border none, floating enable
 
 ## Bluetooth Manager
 for_window [app_id="blueman-manager"] border none, floating enable
+
+## Godot
+for_window [class="Godot" title="^(?!.*Godot Engine$).*$"] floating enable
