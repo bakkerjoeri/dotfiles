@@ -5,10 +5,8 @@ local keymap = require 'lib.keymap'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<CR>', { desc = 'Edit neovim config' })
-
 keymap('n', '<leader>w', ':w<CR>', { desc = 'Write buffer' })
-keymap('n', '<leader>W', ':noa w<CR>', { desc = 'Write without formatting' })
+keymap('n', '<leader>W', ':noa w<CR>', { desc = 'Write without autocommands' })
 keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'Clear search highlights' })
 
 -- Window & tab management
@@ -105,6 +103,12 @@ require('lazy').setup({
 	'tpope/vim-sleuth',
 	'chaoren/vim-wordmotion',
 	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	},
+	{
 		'nvim-telescope/telescope.nvim',
 		version = '*',
 		dependencies = { 'nvim-lua/plenary.nvim' },
@@ -115,13 +119,15 @@ require('lazy').setup({
 						prompt_position = 'top',
 					},
 					sorting_strategy = 'ascending',
-					file_ignore_patterns = { '.git/' },
+					file_ignore_patterns = {},
 					path_display = { 'smart' },
 					dynamic_preview_title = true,
+					set_env = { ["COLORTERM"] = "truecolor" },
 				},
 				pickers = {
 					find_files = {
 						hidden = true,
+						theme = "dropdown"
 					},
 				},
 			})
@@ -161,13 +167,30 @@ require('lazy').setup({
 			"MunifTanjim/nui.nvim",
 		},
 		keys = {
-			{ "<leader>n", "<cmd>NeoTreeFocusToggle<cr>", desc = "Toggle file browser" },
+			{ "<leader>e", "<cmd>NeoTreeFocusToggle<cr>", desc = "Toggle file explorer" },
 		},
 		config = function()
 			require('neo-tree').setup({
 				filesystem = {
 					follow_current_file = true,
-				}
+				},
+				default_component_configs = {
+					git_status = {
+						symbols = {
+							-- Change type
+							added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+							modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
+							deleted   = "✖",-- this can only be used in the git_status source
+							renamed   = "󰁕",-- this can only be used in the git_status source
+							-- Status type
+							untracked = "u",
+							ignored   = "◌",
+							unstaged  = "󰄱",
+							staged    = "",
+							conflict  = "",
+						},
+					},
+				},
 			})
 		end,
 	},
@@ -422,7 +445,7 @@ require('lazy').setup({
 			'hrsh7th/cmp-nvim-lsp-signature-help',
 		},
 		config = function()
-			require('plugins/cmp').setup()
+			require('plugins.cmp').setup()
 		end,
 		event = { "InsertEnter", "CmdlineEnter" },
 	},
@@ -437,28 +460,30 @@ require('lazy').setup({
 				lazygit:toggle()
 			end
 
-			keymap('n', '<A-i>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
-			keymap('n', '<A-i>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
-			keymap('t', '<A-i>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
-			keymap('n', '<A-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
-			keymap('t', '<A-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
-			keymap('n', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
-			keymap('t', '<A-g>', '<CMD>lua LazygitToggle()<CR>', { desc = 'Toggle lazygit' })
+			keymap('n', '<C-t>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<C-t>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
+			keymap('t', '<C-t>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
+			keymap('n', '<C-S-T>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
+			keymap('t', '<C-S-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
 
 			function _G.set_terminal_keymaps()
 				local opts = {buffer = 0}
-				vim.keymap.set('t', '<A-h>', [[<Cmd>wincmd h<CR>]], opts)
-				vim.keymap.set('t', '<A-j>', [[<Cmd>wincmd j<CR>]], opts)
-				vim.keymap.set('t', '<A-k>', [[<Cmd>wincmd k<CR>]], opts)
-				vim.keymap.set('t', '<A-l>', [[<Cmd>wincmd l<CR>]], opts)
+				vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+				vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+				vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+				vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 			end
 
 			-- if you only want these mappings for toggle term use term://*toggleterm#* instead
 			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-
 		end,
 	},
-	{ 'folke/which-key.nvim', opts = {} },
+	{
+		'folke/which-key.nvim',
+		config = function()
+			require('plugins.which-key').setup()
+		end,
+	},
 	-- Themes
 	'dracula/vim',
 	'nyoom-engineering/oxocarbon.nvim',
@@ -472,3 +497,157 @@ vim.cmd.colorscheme 'dracula'
 
 
 
+return {
+  kind = {
+    Array = "",
+    Boolean = "",
+    Class = "",
+    Color = "",
+    Constant = "",
+    Constructor = "",
+    Enum = "",
+    EnumMember = "",
+    Event = "",
+    Field = "",
+    File = "",
+    Folder = "󰉋",
+    Function = "",
+    Interface = "",
+    Key = "",
+    Keyword = "",
+    Method = "",
+    Module = "",
+    Namespace = "",
+    Null = "󰟢",
+    Number = "",
+    Object = "",
+    Operator = "",
+    Package = "",
+    Property = "",
+    Reference = "",
+    Snippet = "",
+    String = "",
+    Struct = "",
+    Text = "",
+    TypeParameter = "",
+    Unit = "",
+    Value = "",
+    Variable = "",
+  },
+  git = {
+    LineAdded = "",
+    LineModified = "",
+    LineRemoved = "",
+    FileDeleted = "",
+    FileIgnored = "◌",
+    FileRenamed = "",
+    FileStaged = "S",
+    FileUnmerged = "",
+    FileUnstaged = "",
+    FileUntracked = "U",
+    Diff = "",
+    Repo = "",
+    Octoface = "",
+    Branch = "",
+  },
+  ui = {
+    ArrowCircleDown = "",
+    ArrowCircleLeft = "",
+    ArrowCircleRight = "",
+    ArrowCircleUp = "",
+    BoldArrowDown = "",
+    BoldArrowLeft = "",
+    BoldArrowRight = "",
+    BoldArrowUp = "",
+    BoldClose = "",
+    BoldDividerLeft = "",
+    BoldDividerRight = "",
+    BoldLineLeft = "▎",
+    BookMark = "",
+    BoxChecked = "",
+    Bug = "",
+    Stacks = "",
+    Scopes = "",
+    Watches = "󰂥",
+    DebugConsole = "",
+    Calendar = "",
+    Check = "",
+    ChevronRight = "",
+    ChevronShortDown = "",
+    ChevronShortLeft = "",
+    ChevronShortRight = "",
+    ChevronShortUp = "",
+    Circle = " ",
+    Close = "󰅖",
+    CloudDownload = "",
+    Code = "",
+    Comment = "",
+    Dashboard = "",
+    DividerLeft = "",
+    DividerRight = "",
+    DoubleChevronRight = "»",
+    Ellipsis = "",
+    EmptyFolder = "",
+    EmptyFolderOpen = "",
+    File = "",
+    FileSymlink = "",
+    Files = "",
+    FindFile = "󰈞",
+    FindText = "󰊄",
+    Fire = "",
+    Folder = "󰉋",
+    FolderOpen = "",
+    FolderSymlink = "",
+    Forward = "",
+    Gear = "",
+    History = "",
+    Lightbulb = "",
+    LineLeft = "▏",
+    LineMiddle = "│",
+    List = "",
+    Lock = "",
+    NewFile = "",
+    Note = "",
+    Package = "",
+    Pencil = "󰏫",
+    Plus = "",
+    Project = "",
+    Search = "",
+    SignIn = "",
+    SignOut = "",
+    Tab = "󰌒",
+    Table = "",
+    Target = "󰀘",
+    Telescope = "",
+    Text = "",
+    Tree = "",
+    Triangle = "󰐊",
+    TriangleShortArrowDown = "",
+    TriangleShortArrowLeft = "",
+    TriangleShortArrowRight = "",
+    TriangleShortArrowUp = "",
+  },
+  diagnostics = {
+    BoldError = "",
+    Error = "",
+    BoldWarning = "",
+    Warning = "",
+    BoldInformation = "",
+    Information = "",
+    BoldQuestion = "",
+    Question = "",
+    BoldHint = "",
+    Hint = "󰌶",
+    Debug = "",
+    Trace = "✎",
+  },
+  misc = {
+    Robot = "󰚩",
+    Squirrel = "",
+    Tag = "",
+    Watch = "",
+    Smiley = "",
+    Package = "",
+    CircuitBoard = "",
+  },
+}
