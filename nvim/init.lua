@@ -5,14 +5,6 @@ local keymap = require 'lib.keymap'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-keymap('n', '<leader>w', ':w<CR>', { desc = 'Write buffer' })
-keymap('n', '<leader>W', ':noa w<CR>', { desc = 'Write without autocommands' })
-keymap('n', '<leader>k', ':nohlsearch<CR>', { desc = 'Clear search highlights' })
-
--- Window & tab management
-keymap('n', '<leader>sh', '<C-w>s', { desc = 'Split horizontally' })
-keymap('n', '<leader>sv', '<C-w>v', { desc = 'Split vertically' })
-
 keymap('n', '<C-h>', '<C-w>h', { desc = 'Go to the left window' })
 keymap('n', '<C-j>', '<C-w>j', { desc = 'Go to the down window ' })
 keymap('n', '<C-k>', '<C-w>k', { desc = 'Go to the up window' })
@@ -22,21 +14,6 @@ keymap('n', '<C-S-H>', '<C-w><', { desc = 'Decrease width' })
 keymap('n', '<C-S-L>', '<C-w>>', { desc = 'Increase width' })
 keymap('n', '<C-S-J>', '<C-w>-', { desc = 'Decrease height' })
 keymap('n', '<C-S-K>', '<C-w>+', { desc = 'Increase height' })
-
-keymap('n', '<leader>tn', ':tabnew<CR>', { desc = 'Open a new tab' })
-keymap('n', '<leader>tq', ':tabclose<CR>', { desc = 'Close current tab' })
-
-keymap('n', '<leader>th', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
-keymap('n', '<leader>tj', ':tablast<CR>', { desc = 'Go to the last tab' })
-keymap('n', '<leader>tk', ':tabfirst<CR>', { desc = 'Go to the first tab' })
-keymap('n', '<leader>tl', ':tabnext<CR>', { desc = 'Go to the next tab' })
-
--- Buffer navigation
-keymap('n', '<leader>bh', ':bprevious<CR>', { desc = 'Go to the previous buffer' })
-keymap('n', '<leader>bj', ':blast<CR>', { desc = 'Go to the last buffer' })
-keymap('n', '<leader>bk', ':bfirst<CR>', { desc = 'Go to the first buffer' })
-keymap('n', '<leader>bl', ':bnext<CR>', { desc = 'Go to the next buffer' })
-keymap('n', '<leader>bq', ':q<CR>', { desc = 'Close current buffer' })
 
 -- Move content up or down
 keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down'});
@@ -129,24 +106,39 @@ require('lazy').setup({
 						hidden = true,
 						theme = "dropdown"
 					},
+					oldfiles = {
+						hidden = true,
+						theme = "dropdown"
+					},
+					live_grep = {
+						hidden = true,
+						theme = "dropdown"
+					},
+					grep_string = {
+						hidden = true,
+						theme = "dropdown"
+					},
+					buffers = {
+						theme = "dropdown"
+					},
+					diagnostics = {
+						theme = "dropdown"
+					},
+					commands = {
+						theme = "dropdown"
+					},
+					keymaps = {
+						theme = "dropdown"
+					},
+					help_tags = {
+						theme = "dropdown"
+					},
+					colorscheme = {
+						theme = "dropdown",
+					},
 				},
 			})
 			require('telescope').load_extension('fzf')
-			vim.keymap.set('n', '<leader>/', function()
-				require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-					winblend = 10,
-					previewer = false,
-				})
-			end, { desc = "Find in current buffer"})
-			vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 'Resume last search'})
-			vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Find files by content'})
-			vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, { desc = 'Find files by content'})
-			vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = 'Find current word'})
-			vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = 'Find buffers'})
-			vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = 'Find diagnostics'})
-			vim.keymap.set('n', '<leader>fc', require('telescope.builtin').commands, { desc = 'Find commands'})
-			vim.keymap.set('n', '<leader>fk', require('telescope.builtin').keymaps, { desc = 'Find normal keymaps'})
-			vim.keymap.set('n', '<leader>d', require('telescope.builtin').diagnostics, { desc = 'Show diagnostics'})
 		end,
 	},
 	{
@@ -175,6 +167,10 @@ require('lazy').setup({
 					follow_current_file = true,
 				},
 				default_component_configs = {
+					modified = {
+						symbol = "",
+						highlight = "NeoTreeModified",
+					},
 					git_status = {
 						symbols = {
 							-- Change type
@@ -264,7 +260,7 @@ require('lazy').setup({
 					offsets = {
 						{
 							filetype = 'neo-tree',
-							text = '  Files',
+							text = 'File explorer',
 							text_align = 'left',
 							separator = true,
 						}
@@ -494,160 +490,3 @@ require('lazy').setup({
 
 -- Set theme
 vim.cmd.colorscheme 'dracula'
-
-
-
-return {
-  kind = {
-    Array = "",
-    Boolean = "",
-    Class = "",
-    Color = "",
-    Constant = "",
-    Constructor = "",
-    Enum = "",
-    EnumMember = "",
-    Event = "",
-    Field = "",
-    File = "",
-    Folder = "󰉋",
-    Function = "",
-    Interface = "",
-    Key = "",
-    Keyword = "",
-    Method = "",
-    Module = "",
-    Namespace = "",
-    Null = "󰟢",
-    Number = "",
-    Object = "",
-    Operator = "",
-    Package = "",
-    Property = "",
-    Reference = "",
-    Snippet = "",
-    String = "",
-    Struct = "",
-    Text = "",
-    TypeParameter = "",
-    Unit = "",
-    Value = "",
-    Variable = "",
-  },
-  git = {
-    LineAdded = "",
-    LineModified = "",
-    LineRemoved = "",
-    FileDeleted = "",
-    FileIgnored = "◌",
-    FileRenamed = "",
-    FileStaged = "S",
-    FileUnmerged = "",
-    FileUnstaged = "",
-    FileUntracked = "U",
-    Diff = "",
-    Repo = "",
-    Octoface = "",
-    Branch = "",
-  },
-  ui = {
-    ArrowCircleDown = "",
-    ArrowCircleLeft = "",
-    ArrowCircleRight = "",
-    ArrowCircleUp = "",
-    BoldArrowDown = "",
-    BoldArrowLeft = "",
-    BoldArrowRight = "",
-    BoldArrowUp = "",
-    BoldClose = "",
-    BoldDividerLeft = "",
-    BoldDividerRight = "",
-    BoldLineLeft = "▎",
-    BookMark = "",
-    BoxChecked = "",
-    Bug = "",
-    Stacks = "",
-    Scopes = "",
-    Watches = "󰂥",
-    DebugConsole = "",
-    Calendar = "",
-    Check = "",
-    ChevronRight = "",
-    ChevronShortDown = "",
-    ChevronShortLeft = "",
-    ChevronShortRight = "",
-    ChevronShortUp = "",
-    Circle = " ",
-    Close = "󰅖",
-    CloudDownload = "",
-    Code = "",
-    Comment = "",
-    Dashboard = "",
-    DividerLeft = "",
-    DividerRight = "",
-    DoubleChevronRight = "»",
-    Ellipsis = "",
-    EmptyFolder = "",
-    EmptyFolderOpen = "",
-    File = "",
-    FileSymlink = "",
-    Files = "",
-    FindFile = "󰈞",
-    FindText = "󰊄",
-    Fire = "",
-    Folder = "󰉋",
-    FolderOpen = "",
-    FolderSymlink = "",
-    Forward = "",
-    Gear = "",
-    History = "",
-    Lightbulb = "",
-    LineLeft = "▏",
-    LineMiddle = "│",
-    List = "",
-    Lock = "",
-    NewFile = "",
-    Note = "",
-    Package = "",
-    Pencil = "󰏫",
-    Plus = "",
-    Project = "",
-    Search = "",
-    SignIn = "",
-    SignOut = "",
-    Tab = "󰌒",
-    Table = "",
-    Target = "󰀘",
-    Telescope = "",
-    Text = "",
-    Tree = "",
-    Triangle = "󰐊",
-    TriangleShortArrowDown = "",
-    TriangleShortArrowLeft = "",
-    TriangleShortArrowRight = "",
-    TriangleShortArrowUp = "",
-  },
-  diagnostics = {
-    BoldError = "",
-    Error = "",
-    BoldWarning = "",
-    Warning = "",
-    BoldInformation = "",
-    Information = "",
-    BoldQuestion = "",
-    Question = "",
-    BoldHint = "",
-    Hint = "󰌶",
-    Debug = "",
-    Trace = "✎",
-  },
-  misc = {
-    Robot = "󰚩",
-    Squirrel = "",
-    Tag = "",
-    Watch = "",
-    Smiley = "",
-    Package = "",
-    CircuitBoard = "",
-  },
-}
