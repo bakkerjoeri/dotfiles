@@ -53,7 +53,6 @@ vim.o.splitright = true
 vim.o.breakindent = true
 vim.o.linebreak = true
 vim.o.list = true
-vim.o.listchars = 'tab:> ,lead:·,trail:·'
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
 vim.o.updatetime = 250
@@ -69,7 +68,8 @@ require('lazy').setup({
 	{
 		'windwp/nvim-autopairs',
 		event = "InsertEnter",
-		opts = {}
+		opts = {},
+		dependencies = { "nvim-treesitter/nvim-treesitter", "hrsh7th/nvim-cmp" },
 	},
 	'dkarter/bullets.vim',
 	'tpope/vim-commentary',
@@ -78,7 +78,13 @@ require('lazy').setup({
 	'tpope/vim-repeat',
 	'tpope/vim-surround',
 	'tpope/vim-sleuth',
-	'chaoren/vim-wordmotion',
+	{
+		'lukas-reineke/indent-blankline.nvim',
+		main = 'ibl',
+		config = function()
+			require('plugins.indentlines').setup()
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
