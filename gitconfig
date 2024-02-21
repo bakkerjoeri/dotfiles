@@ -1,9 +1,11 @@
 [user]
 	email = bakkerjoeri@gmail.com
-	name = bakkerjoeri
+	name = Joeri Bakker
 [core]
 	editor = nvim
 [init]
 	defaultBranch = main
 [pull]
 	rebase = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
