@@ -17,6 +17,9 @@ set $screenshot_path "~/Pictures/Screenshots"
 exec swaync
 exec wal -R
 exec swaycons
+exec eval $(gnome-keyring-daemon --start)
+exec export SSH_AUTH_SOCK
+exec /usr/lib/polkit-1/polkit-agent-helper-1
 
 ## Set up clipman
 exec wl-paste --type text --watch clipman store --no-persist

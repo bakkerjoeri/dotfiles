@@ -13,3 +13,5 @@ export ANDROID_HOME=$HOME/Android/Sdk
 export ANDROID_AVD_HOME=$HOME/.var/app/com.google.AndroidStudio/config/.android/avd
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/gcr/ssh
