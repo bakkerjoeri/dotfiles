@@ -5,7 +5,36 @@ local function setup()
     ['/'] = { "<cmd>Telescope current_buffer_fuzzy_find previewer=false theme=dropdown<cr>", "Search in this buffer" },
     w = { ":w<cr>", "Write buffer" },
     k = { ":nohlsearch<cr>", "Clear search highlights" },
-    d = { "<cmd>Telescope diagnostics<cr>", "Diagnostics"},
+    d = {
+      name = "Diagnostics",
+      d = { "<cmd>Telescope diagnostics bufnr=0<cr>", "Document diagnostics" },
+      D = { "<cmd>Telescope diagnostics<cr>", "Workspace diagnostics" },
+      j = {
+        "<cmd>lua vim.diagnostic.goto_next()<cr>",
+        "Next diagnostic",
+      },
+      k = {
+        "<cmd>lua vim.diagnostic.goto_prev()<cr>",
+        "Previous diagnostic",
+      },
+      l = {
+        '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>',
+        "Line diagnostics"
+      },
+    },
+    l = {
+      name = "Language features",
+      r = {
+        "<cmd>lua vim.lsp.buf.rename()<CR>",
+        "Rename symbol"
+      },
+      a = {  "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code actions..." },
+      -- Add:
+        -- format
+        -- signature help
+        -- hover help
+        -- 
+    },
     b = {
       name = "Buffer",
       g = { "<cmd>BufferLinePick<cr>", "Go to buffer..." },

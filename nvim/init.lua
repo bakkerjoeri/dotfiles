@@ -10,10 +10,10 @@ keymap('n', '<C-j>', '<C-w>j', { desc = 'Go to the down window ' })
 keymap('n', '<C-k>', '<C-w>k', { desc = 'Go to the up window' })
 keymap('n', '<C-l>', '<C-w>l', { desc = 'Go to the right window' })
 
-keymap('n', '<C-S-H>', '<C-w><', { desc = 'Decrease width' })
-keymap('n', '<C-S-L>', '<C-w>>', { desc = 'Increase width' })
-keymap('n', '<C-S-J>', '<C-w>-', { desc = 'Decrease height' })
-keymap('n', '<C-S-K>', '<C-w>+', { desc = 'Increase height' })
+keymap('n', '<C-Left>', '<C-w><', { desc = 'Decrease width' })
+keymap('n', '<C-Right>', '<C-w>>', { desc = 'Increase width' })
+keymap('n', '<C-Down>', '<C-w>-', { desc = 'Decrease height' })
+keymap('n', '<C-Up>', '<C-w>+', { desc = 'Increase height' })
 
 -- Move content up or down
 keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down'});
@@ -318,11 +318,9 @@ require('lazy').setup({
 				vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>', { buffer = bufnr, desc = 'List references' })
 				vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { buffer = bufnr, desc = 'Hover documentation' })
 				vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
-				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>', { buffer = bufnr, desc = 'Signature documentation' })
+				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>', { buffer = bufnr, desc = 'Line diagnostics'})
 				vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = bufnr, desc = 'Rename symbol' })
 				vim.keymap.set('n', '<leader>rf', '<cmd>Format<CR>', { buffer = bufnr, desc = 'Format buffer' })
-				vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { buffer = bufnr, desc = 'Code actions' })
-				vim.keymap.set('v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', { buffer = bufnr, desc = 'Code actions on range' })
 			end
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -463,10 +461,9 @@ require('lazy').setup({
 			end
 
 			keymap('n', '<C-t>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
-			keymap('n', '<C-t>', '<CMD>exe v:count1 . "ToggleTerm direction=horizontal"<CR>', { desc = 'Toggle terminal' })
 			keymap('t', '<C-t>', '<CMD>ToggleTerm<CR>', { desc = 'Toggle terminal' })
 			keymap('n', '<C-S-T>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
-			keymap('t', '<C-S-I>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
+			keymap('t', '<C-S-T>', '<CMD>ToggleTermToggleAll<CR>', { desc = 'Toggle all terminals' })
 
 			function _G.set_terminal_keymaps()
 				local opts = {buffer = 0}
