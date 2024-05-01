@@ -1,17 +1,49 @@
 #!/usr/bin/env bash
+#
+display_help() {
+    echo "Usage: $0 [OPTIONS] [PATH]"
+    echo "Create a new note and open it with the editor specified in the \$EDITOR env variable."
+    echo
+    echo "Options:"
+    echo "  -h, --help     Display this help message."
+    echo
+    echo "Arguments:"
+    echo "  PATH           Path to store the new note. If not provided, uses \$NOTES env variable."
+    exit 0
+}
 
-if [[ -z "$NOTES" ]]; then
-    echo "NOTES is not set"
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    display_help
+fi
+
+if [ -z "$EDITOR" ]; then
+    echo "Error: \$EDITOR environment variable is not set. This is needed to open the note."
     exit 1
 fi
 
-if [[ -z "$EDITOR" ]]; then
-    echo "EDITOR is not set"
-    exit 1
+# Check if a path is provided as the first argument, otherwise use $NOTES
+if [ $# -eq 0 ]; then
+    if [ -z "$NOTES" ]; then
+        echo "Error: \$NOTES environment variable is not set, and no path provided."
+        exit 1
+    else
+        NOTES_PATH="$NOTES"
+    fi
+else
+    NOTES_PATH="$(dirname "$1")"
 fi
 
-filename="$(date '+%Y-%m-%d').md"
-filepath="$NOTES/$filename"
+# Create the directory if it doesn't exist
+if [ ! -d "$NOTES_PATH" ]; then
+    echo "Creating directory: $NOTES_PATH"
+    mkdir -p "$NOTES_PATH" || {
+        echo "Error: Unable to create directory '$NOTES_PATH'."
+        exit 1
+    }
+fi
 
-cd $NOTES
-exec $EDITOR $filepath
+FILENAME="$(date '+%Y-%m-%d').md"
+NOTE_PATH="$NOTES_PATH/$FILENAME"
+
+cd $NOTES_PATH
+exec $EDITOR $NOTE_PATH
