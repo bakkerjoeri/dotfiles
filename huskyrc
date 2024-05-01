@@ -2,7 +2,3 @@
 # This loads nvm.sh and sets the correct PATH before running hook
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Includes pnpm in the path
-export PNPM_HOME="/home/joeri/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"

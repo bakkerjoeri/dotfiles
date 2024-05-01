@@ -40,12 +40,6 @@ open () {
     xdg-open $* > /dev/null 2>&1
 }
 
-# pnpm
-export PNPM_HOME="/home/joeri/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-
-
 # Import pywal theme
 (cat ~/.cache/wal/sequences &)
 
