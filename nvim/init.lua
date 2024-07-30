@@ -59,6 +59,7 @@ vim.o.updatetime = 250
 vim.o.timeout = true
 vim.o.timeoutlen = 300
 vim.o.showmode = false
+vim.o.formatoptions = 'cqln'
 
 -- SECTION: Plugins
 local install_lazy = require('lib.install_lazy')
@@ -118,6 +119,7 @@ require('lazy').setup({
 					},
 					live_grep = {
 						hidden = true,
+						ignored = true,
 						theme = "dropdown"
 					},
 					grep_string = {
@@ -206,12 +208,38 @@ require('lazy').setup({
 			require('nvim-treesitter.configs').setup({
 				-- TODO add config from kickstart.nvim
 				ensure_installed = "all",
+				indent = {
+					enable = true,
+					disable = { "markdown" },
+				},
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
 				},
 			})
 		end,
+	},
+	{
+		"romgrk/nvim-treesitter-context",
+		config = function()
+			require("treesitter-context").setup{
+				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+				throttle = true, -- Throttles plugin updates (may improve performance)
+				mode = 'topline',
+				max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
+				patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+					-- For all filetypes
+					-- Note that setting an entry here replaces all other patterns for this entry.
+					-- By setting the 'default' entry below, you can control which nodes you want to
+					-- appear in the context window.
+					default = {
+						'class',
+						'function',
+						'method',
+					},
+				},
+			}
+		end
 	},
 	{
 		'nvim-lualine/lualine.nvim',
@@ -334,12 +362,14 @@ require('lazy').setup({
 			local servers = {
 				'cssls',
 				'eslint',
+				'graphql',
 				'html',
 				'jsonls',
 				'lua_ls',
 				'rust_analyzer',
 				'svelte',
 				'tsserver',
+				'yamlls'
 			}
 
 			require('mason-lspconfig').setup({
@@ -436,7 +466,11 @@ require('lazy').setup({
 		'hrsh7th/nvim-cmp',
 		dependencies = {
 			'hrsh7th/cmp-nvim-lsp',
-			'L3MON4D3/LuaSnip',
+			{
+				'L3MON4D3/LuaSnip',
+				version = "v2.*",
+				build = "make install_jsregexp"
+			},
 			'saadparwaiz1/cmp_luasnip',
 			'hrsh7th/cmp-buffer',
 			'hrsh7th/cmp-path',
