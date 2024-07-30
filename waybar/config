@@ -3,8 +3,8 @@
 	"spacing": 10,
 	"margin": "10px 10px 0px 10px",
 	"modules-left": ["sway/workspaces", "sway/mode"],
-	"modules-center": ["clock"],
-	"modules-right": ["tray", "pulseaudio", "battery", "network", "idle_inhibitor","custom/notification"],
+	"modules-center": ["clock", "custom/notification"],
+	"modules-right": ["tray", "pulseaudio", "network", "battery",  "idle_inhibitor", "custom/power"],
 	"sway/window": {
 		"format": "{app_id}",
 		"max-length": 50,
@@ -26,15 +26,19 @@
 		"format-time": "{H}:{m}"
 	},
 	"network": {
-		"format-wifi": "{icon}",
+		"format-wifi": "{icon} {signalStrength}%",
+		"format-disconnected": "{icon}",
+		"format-disabled": "{icon} disabled ",
 		"tooltip-format-wifi": "{essid} {signalStrength}%",
 		"tooltip-format-ethernet": "{ipaddr}/{cidr}",
 		"tooltip-format-linked": "{ifname} (no IP)",
 		"tooltip-format-disconnected": "No connection",
+		"tooltip-format-disabled": "Disabled",
 		"format-icons": {
 			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
 			"ethernet": ["󰈁"],
-			"disconnected": ["󰤭 "]
+			"disconnected": ["󰤮 "],
+			"disabled": ["󰤭 "]
 		},
 		"on-click": "wifimenu",
 	},
