@@ -49,9 +49,15 @@ set $down j
 set $up k
 set $right l
 
+# Screen output configuration
 output * bg `find $HOME/.wallpapers/ -type f | shuf -n 1` fill
+
+## External monitor on the right
 output eDP-1 pos 0 0 res 2256x1504 scale 1.25
-# output DP-1 pos 1920 320 res 1920x1080 scale 1
+
+## External monitor on the left
+# output eDP-1 pos 1920 0 res 2256x1504 scale 1.25
+# output DP-1 pos 0 0
 
 ### Input configuration
 input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
@@ -195,7 +201,6 @@ bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
-
 
 mode "resize" {
     bindsym $left resize shrink width 10px
