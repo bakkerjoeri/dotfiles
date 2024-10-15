@@ -8,5 +8,7 @@ local function setup()
 end
 
 return {
-  setup = setup
+  'lukas-reineke/indent-blankline.nvim',
+  main = 'ibl',
+  config = setup
 }

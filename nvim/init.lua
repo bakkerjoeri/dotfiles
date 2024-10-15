@@ -66,6 +66,7 @@ local install_lazy = require('lib.install_lazy')
 install_lazy()
 
 require('lazy').setup({
+	{ import = "plugins" },
 	{
 		'windwp/nvim-autopairs',
 		event = "InsertEnter",
@@ -79,13 +80,6 @@ require('lazy').setup({
 	'tpope/vim-repeat',
 	'tpope/vim-surround',
 	'tpope/vim-sleuth',
-	{
-		'lukas-reineke/indent-blankline.nvim',
-		main = 'ibl',
-		config = function()
-			require('plugins.indentlines').setup()
-		end,
-	},
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -159,44 +153,23 @@ require('lazy').setup({
 		end,
 	},
 	{
-		'nvim-neo-tree/neo-tree.nvim',
-		branch = 'v2.x',
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		keys = {
-			{ "<leader>e", "<cmd>NeoTreeFocusToggle<cr>", desc = "Toggle file explorer" },
-		},
+		'echasnovski/mini.files',
+		version = '*',
 		config = function()
-			require('neo-tree').setup({
-				filesystem = {
-					follow_current_file = true,
+			require('mini.files').setup({
+				options = {
+					permanent_delete = false
 				},
-				default_component_configs = {
-					modified = {
-						symbol = "",
-						highlight = "NeoTreeModified",
-					},
-					git_status = {
-						symbols = {
-							-- Change type
-							added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-							modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
-							deleted   = "✖",-- this can only be used in the git_status source
-							renamed   = "󰁕",-- this can only be used in the git_status source
-							-- Status type
-							untracked = "u",
-							ignored   = "◌",
-							unstaged  = "󰄱",
-							staged    = "",
-							conflict  = "",
-						},
-					},
-				},
+				windows = {
+					preview = true
+				}
 			})
 		end,
+		keys = {
+			{ "<leader>e", "<cmd>:lua MiniFiles.open()<cr>", desc = "Open explorer" },
+			{ "<leader>E", "<cmd>:lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr><cmd>:lua MiniFiles.reveal_cwd()<cr>", desc = "Reveal active file in explorer" },
+
+		},
 	},
 	{
 		'nvim-treesitter/nvim-treesitter',
@@ -317,171 +290,10 @@ require('lazy').setup({
 	},
 	'jxnblk/vim-mdx-js',
 	{
-		-- LSP
-		'neovim/nvim-lspconfig',
-		dependencies = {
-			'jose-elias-alvarez/null-ls.nvim',
-			'williamboman/mason.nvim',
-			'williamboman/mason-lspconfig.nvim',
-			{ 'j-hui/fidget.nvim', opts = {}, tag = 'legacy' },
-			'folke/neodev.nvim',
-			'simrat39/rust-tools.nvim',
-			'hrsh7th/cmp-nvim-lsp',
-		},
+		'williamboman/mason.nvim',
 		config = function()
-			vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
-			vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
-			vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
-			vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
-
-			local on_attach = function(_, bufnr)
-				vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-					vim.cmd("EslintFixAll")
-					vim.lsp.buf.format()
-				end, { desc = 'Format current buffer with LSP' })
-
-				vim.keymap.set('n', 'gd', ':Telescope lsp_definitions<CR>', { buffer = bufnr, desc = 'Go to definition' })
-				vim.keymap.set('n', 'gy', ':Telescope lsp_type_definitions<CR>', { buffer = bufnr, desc = 'Go to type definition' })
-				vim.keymap.set('n', 'gi', ':Telescope lsp_implementations<CR>', { buffer = bufnr, desc = 'Go to implementations' })
-				vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>', { buffer = bufnr, desc = 'List references' })
-				vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { buffer = bufnr, desc = 'Hover documentation' })
-				vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { buffer = bufnr, desc = 'Signature documentation' })
-				vim.keymap.set('n', '<C-e>', '<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>', { buffer = bufnr, desc = 'Line diagnostics'})
-				vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = bufnr, desc = 'Rename symbol' })
-				vim.keymap.set('n', '<leader>rf', '<cmd>Format<CR>', { buffer = bufnr, desc = 'Format buffer' })
-			end
-
-			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-			-- Setup mason so it can manage external tooling
-			require('mason').setup()
-
-			-- Ensure servers above are installed
-			local servers = {
-				'cssls',
-				'eslint',
-				'graphql',
-				'html',
-				'jsonls',
-				'lua_ls',
-				'rust_analyzer',
-				'svelte',
-				'ts_ls',
-				'yamlls'
-			}
-
-			require('mason-lspconfig').setup({
-				ensure_installed = servers,
-			})
-
-			require('mason-lspconfig').setup_handlers({
-				function(server_name)
-					require('lspconfig')[server_name].setup({
-						capabilities = capabilities,
-						flags = { debounce_text_changes = 150 },
-						on_attach = function(client, bufnr)
-							client.server_capabilities.documentFormattingProvider = false
-							client.server_capabilities.documentRangeFormattingProvider = false
-							on_attach(client, bufnr)
-						end,
-					})
-				end,
-				['lua_ls'] = function()
-					require('lspconfig').lua_ls.setup({
-						settings = {
-							Lua = {
-								diagnostics = {
-									globals = { 'vim' }
-								}
-							}
-						}
-					})
-				end,
-				['eslint'] = function()
-					require('lspconfig').eslint.setup({
-						capabilities = capabilities,
-						flags = { debounce_text_changes = 150 },
-						on_attach = function(client, bufnr)
-							vim.api.nvim_create_autocmd("BufWritePre", {
-								buffer = bufnr,
-								command = "EslintFixAll"
-							})
-							on_attach(client, bufnr)
-						end,
-						filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "markdown.mdx" },
-					})
-				end,
-				['rust_analyzer'] = function()
-					require('rust-tools').setup({
-						server = {
-							on_attach = on_attach,
-						},
-						settings = {
-							tools = {
-								runnables = {
-									use_telescope = true,
-								},
-								inlay_hints = {
-									auto = true,
-									show_parameter_hints = false,
-									parameter_hints_prefix = "",
-									other_hints_prefix = "",
-								},
-							},
-						}
-					})
-				end,
-			})
-
-			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-			require('null-ls').setup({
-				capabilities = capabilities,
-				flags = { debounce_text_changes = 150 },
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						-- vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
-							buffer = bufnr,
-							callback = function()
-								vim.lsp.buf.format({ bufnr = bufnr })
-							end,
-						})
-					end
-					on_attach(client, bufnr)
-				end,
-				sources = {
-					require('null-ls').builtins.formatting.prettier.with({
-						only_local = "node_modules/.bin",
-						extra_filetypes = { "svelte" },
-					}),
-				},
-			})
-		end,
-	},
-	{
-		-- Autocompletion
-		'hrsh7th/nvim-cmp',
-		dependencies = {
-			'hrsh7th/cmp-nvim-lsp',
-			{
-				'L3MON4D3/LuaSnip',
-				version = "v2.*",
-				build = "make install_jsregexp"
-			},
-			'saadparwaiz1/cmp_luasnip',
-			'hrsh7th/cmp-buffer',
-			'hrsh7th/cmp-path',
-			'hrsh7th/cmp-cmdline',
-			'hrsh7th/cmp-nvim-lua',
-			'hrsh7th/cmp-nvim-lsp-signature-help',
-		},
-		config = function()
-			require('plugins.cmp').setup()
-		end,
-		event = { "InsertEnter", "CmdlineEnter" },
+			require("mason").setup()
+		end
 	},
 	{
 		'akinsho/toggleterm.nvim',
@@ -509,12 +321,6 @@ require('lazy').setup({
 
 			-- if you only want these mappings for toggle term use term://*toggleterm#* instead
 			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-		end,
-	},
-	{
-		'folke/which-key.nvim',
-		config = function()
-			require('plugins.which-key').setup()
 		end,
 	},
 	-- Themes

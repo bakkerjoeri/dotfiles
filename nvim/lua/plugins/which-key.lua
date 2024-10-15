@@ -31,11 +31,13 @@ local function setup()
     { "<leader>fc", "<cmd>lua require('telescope.builtin').colorscheme({enable_preview = true})<cr>", desc = "Colorschemes" },
     { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Files" },
+    { "<leader>fF", "<cmd>Telescope find_files no_ignore=true<cr>", desc = "Files (incl. ignored)" },
     { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
     { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
     { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
     { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Symbols in buffer" },
     { "<leader>ft", "<cmd>Telescope live_grep<cr>", desc = "Text" },
+    { "<leader>fT", "<cmd>Telescope live_grep vimgrep_arguments=rg,--no-ignore<cr>", desc = "Text (incl. ignored)" },
     { "<leader>fw", "<cmd>Telescope grep_string<cr>", desc = "Current word" },
     { "<leader>g", group = "Git" },
     { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "Checkout commit (for current file)" },
@@ -62,5 +64,6 @@ local function setup()
 end
 
 return {
-  setup = setup
+  'folke/which-key.nvim',
+  config = setup
 }

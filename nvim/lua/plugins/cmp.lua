@@ -164,12 +164,6 @@ local function setup()
           if is_insert_mode() then -- prevent overwriting brackets
             confirm_opts.behavior = ConfirmBehavior.Insert
           end
-          local entry = cmp.get_selected_entry()
-          local is_copilot = entry and entry.source.name == "copilot"
-          if is_copilot then
-            confirm_opts.behavior = ConfirmBehavior.Replace
-            confirm_opts.select = true
-          end
           if cmp.confirm(confirm_opts) then
             return -- success, exit early
           end
@@ -202,8 +196,29 @@ local function setup()
       },
     }
   })
+
+  -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 end
 
 return {
-  setup = setup
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+        'hrsh7th/cmp-nvim-lsp',
+        {
+            'L3MON4D3/LuaSnip',
+            version = "v2.*",
+            build = "make install_jsregexp"
+        },
+        'saadparwaiz1/cmp_luasnip',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
+        'hrsh7th/cmp-cmdline',
+        'hrsh7th/cmp-nvim-lua',
+        'hrsh7th/cmp-nvim-lsp-signature-help',
+    },
+    config = setup,
+    event = { "InsertEnter", "CmdlineEnter" },
 }
+
