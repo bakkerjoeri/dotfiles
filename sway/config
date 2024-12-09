@@ -112,6 +112,10 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%-
 
 # Start a terminal
 bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec cd `get-cwd` && $term
+
+# Start an editor
+bindsym $mod+Backspace exec cd `get-cwd` && $term -e $EDITOR
 
 # Start a browser
 bindsym $mod+Semicolon exec $browser
