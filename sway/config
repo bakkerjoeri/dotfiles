@@ -250,3 +250,6 @@ for_window [app_id="blueman-manager"] border none, floating enable
 
 ## Godot
 for_window [class="Godot" title="^(?!.*Godot Engine$).*$"] floating enable
+
+# Include defaults
+include /etc/sway/config.d/*
