@@ -87,7 +87,7 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"williamboman/mason.nvim",
-		"j-hui/fidget.nvim",
+		{ "j-hui/fidget.nvim", tag = "v1.0.0" },
 		"williamboman/mason-lspconfig.nvim",
 	},
 	config = setup,

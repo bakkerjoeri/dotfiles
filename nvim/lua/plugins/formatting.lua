@@ -1,5 +1,5 @@
 local function setup()
-	local prettier_formatter = { "prettierd", "prettier", stop_after_first = true }
+	local prettier_formatter = { "prettierd", stop_after_first = true }
 
 	require("conform").setup({
 		formatters_by_ft = {
@@ -25,6 +25,11 @@ local function setup()
 		},
 		format_on_save = {
 			timeout_ms = 500,
+		},
+		formatters = {
+			prettierd = {
+				require_cwd = true,
+			},
 		},
 	})
 
