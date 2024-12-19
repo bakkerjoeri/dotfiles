@@ -50,7 +50,7 @@ set $up k
 set $right l
 
 # Screen output configuration
-output * bg `find $HOME/.wallpapers/ -type f | shuf -n 1` fill
+output * bg "`find $HOME/.wallpapers/ -type f | shuf -n 1`" fill
 
 ## External monitor on the right
 output eDP-1 pos 0 0 res 2256x1504 scale 1.25
