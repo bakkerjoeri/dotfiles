@@ -163,6 +163,12 @@ require("lazy").setup({
 				windows = {
 					preview = true,
 				},
+				mappings = {
+					go_in = "<cr>",
+					go_in_plus = "<S-cr>",
+					go_out = "<esc>",
+					go_out_plus = "<S-esc>",
+				},
 			})
 		end,
 		keys = {
