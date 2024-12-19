@@ -26,11 +26,6 @@ local function setup()
 		format_on_save = {
 			timeout_ms = 500,
 		},
-		formatters = {
-			prettierd = {
-				require_cwd = true,
-			},
-		},
 	})
 
 	vim.api.nvim_create_user_command("Format", function(args)
