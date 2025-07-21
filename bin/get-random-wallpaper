@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "`find $HOME/.wallpapers/ -type f | shuf -n 1`"

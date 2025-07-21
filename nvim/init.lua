@@ -61,25 +61,37 @@ vim.o.timeoutlen = 300
 vim.o.showmode = false
 vim.o.formatoptions = "cqln"
 
+-- SECTION: Filetypes
+vim.filetype.add({
+	filename = {
+		[".env"] = "sh",
+		[".env.development"] = "sh",
+		[".env.test"] = "sh",
+		[".env.production"] = "sh",
+		[".env.example"] = "sh",
+	},
+})
+
 -- SECTION: Plugins
 local install_lazy = require("lib.install_lazy")
 install_lazy()
 
 require("lazy").setup({
 	{ import = "plugins" },
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		opts = {},
-		dependencies = { "nvim-treesitter/nvim-treesitter", "hrsh7th/nvim-cmp" },
-	},
-	"dkarter/bullets.vim",
 	"tpope/vim-commentary",
 	"tpope/vim-eunuch",
 	"tpope/vim-fugitive",
 	"tpope/vim-repeat",
 	"tpope/vim-surround",
 	"tpope/vim-sleuth",
+	"bullets-vim/bullets.vim",
+	{
+		"echasnovski/mini.pairs",
+		version = "*",
+		config = function()
+			require("mini.pairs").setup()
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -97,7 +109,7 @@ require("lazy").setup({
 						prompt_position = "top",
 					},
 					sorting_strategy = "ascending",
-					file_ignore_patterns = {},
+					file_ignore_patterns = { ".git/" },
 					path_display = { "smart" },
 					dynamic_preview_title = true,
 					set_env = { ["COLORTERM"] = "truecolor" },
@@ -192,11 +204,21 @@ require("lazy").setup({
 				auto_install = true,
 				indent = {
 					enable = true,
-					disable = { "markdown" },
 				},
 				highlight = {
 					enable = true,
+					disable = {
+						"markdown",
+					},
 					additional_vim_regex_highlighting = false,
+				},
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						node_incremental = "<A-o>",
+						scope_incremental = "<A-S-O>",
+						node_decremental = "<A-i>",
+					},
 				},
 			})
 		end,
@@ -341,7 +363,6 @@ require("lazy").setup({
 	},
 	-- Themes
 	"dracula/vim",
-	"nyoom-engineering/oxocarbon.nvim",
 	{ "rose-pine/neovim", name = "rose-pine" },
 	{ "catppuccin/nvim", name = "catppuccin" },
 	{ "AlphaTechnolog/pywal.nvim", name = "pywal" },
@@ -349,3 +370,10 @@ require("lazy").setup({
 
 -- Set theme
 vim.cmd.colorscheme("dracula")
+vim.api.nvim_create_autocmd({ "VimEnter", "ColorScheme" }, {
+	group = vim.api.nvim_create_augroup("Color", {}),
+	pattern = "*",
+	callback = function()
+		vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { link = "@comment" })
+	end,
+})

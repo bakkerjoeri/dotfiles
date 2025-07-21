@@ -18,4 +18,5 @@
 	insteadOf = https://github.com/
 [delta]
     navigate = true
-
+[includeIf "gitdir:~/Developer/cineville/"]
+	path = ~/Developer/cineville/.gitconfig

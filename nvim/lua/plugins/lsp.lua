@@ -37,18 +37,22 @@ local function setup()
 	vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
 	vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
 
+	local capabilities = require("blink.cmp").get_lsp_capabilities()
+
 	require("mason-lspconfig").setup({
 		ensure_installed = lsp_servers,
 	})
 	require("mason-lspconfig").setup_handlers({
 		function(server_name)
 			require("lspconfig")[server_name].setup({
+				capabilities = capabilities,
 				on_attach = on_attach_lsp,
 			})
 		end,
 		["eslint"] = function()
 			require("lspconfig").eslint.setup({
 				flags = { debounce_text_changes = 150 },
+				capabilities = capabilities,
 				on_attach = function(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -69,8 +73,21 @@ local function setup()
 				},
 			})
 		end,
+		["ts_ls"] = function()
+			require("lspconfig").ts_ls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach_lsp,
+				init_options = {
+					preferences = {
+						importModuleSpecifierPreference = "relative",
+					},
+				},
+			})
+		end,
 		["lua_ls"] = function()
 			require("lspconfig").lua_ls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach_lsp,
 				settings = {
 					Lua = {
 						diagnostics = {
@@ -86,9 +103,10 @@ end
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
-		"williamboman/mason.nvim",
-		{ "j-hui/fidget.nvim", tag = "v1.0.0" },
-		"williamboman/mason-lspconfig.nvim",
+		{ "mason-org/mason.nvim", version = "^1.0.0" },
+		{ "j-hui/fidget.nvim", tag = "v1.6.1" },
+		{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
+		"saghen/blink.cmp",
 	},
 	config = setup,
 }
