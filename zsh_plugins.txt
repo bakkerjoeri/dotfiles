@@ -1,0 +1,2 @@
+zsh-users/zsh-syntax-highlighting
+romkatv/powerlevel10k
