@@ -1,0 +1,47 @@
+# Open terminal
+cmd - return : kitty --single-instance -d ~
+
+# Open browser
+cmd - 0x29 : /Applications/Firefox.app/Contents/MacOS/firefox --new-window
+
+# Close a window
+cmd + shift - q : skhd --key "cmd - w"
+
+# Open spotlight
+cmd - d : skhd --key "cmd - space"
+
+# Lockscreen
+cmd + shift - escape : skhd --key "cmd + ctrl - q"
+
+# Yabai
+
+## Window management
+
+cmd + shift - f : yabai -m window --toggle zoom-fullscreen
+cmd + shift - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+### Move focus
+cmd - k : yabai -m window --focus north || yabai -m display --focus north
+cmd - l : yabai -m window --focus east || yabai -m display --focus east
+cmd - j : yabai -m window --focus south || yabai -m display --focus south
+cmd - h : yabai -m window --focus west || yabai -m display --focus west
+
+### Move window
+cmd + shift - k : yabai -m window --warp north || yabai -m window --display north --focus
+cmd + shift - l : yabai -m window --warp east || yabai -m window --display east --focus
+cmd + shift - j : yabai -m window --warp south || yabai -m window --display south --focus
+cmd + shift - h : yabai -m window --warp west || yabai -m window --display west --focus
+
+### Resize window
+cmd + alt - k : yabai -m window --resize top:0:-20; \
+                yabai -m window --resize bottom:0:-20
+cmd + alt - l : yabai -m window --resize right:20:0; \
+                yabai -m window --resize left:20:0
+cmd + alt - j : yabai -m window --resize bottom:0:20; \
+                yabai -m window --resize top:0:20
+cmd + alt - h : yabai -m window --resize left:-20:0; \
+                yabai -m window --resize right:-20:0
+
+## Space management
+cmd - n : yabai -m space --create
+
