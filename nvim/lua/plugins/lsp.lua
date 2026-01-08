@@ -22,13 +22,6 @@ local on_attach_lsp = function(_, bufnr)
 		"<cmd>lua vim.lsp.buf.signature_help()<CR>",
 		{ buffer = bufnr, desc = "Signature documentation" }
 	)
-	vim.keymap.set(
-		"n",
-		"<C-e>",
-		'<cmd>lua vim.diagnostic.open_float({ source = "always" })<CR>',
-		{ buffer = bufnr, desc = "Line diagnostics" }
-	)
-	vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { buffer = bufnr, desc = "Rename symbol" })
 end
 
 local function setup()
@@ -104,7 +97,7 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		{ "mason-org/mason.nvim", version = "^1.0.0" },
-		{ "j-hui/fidget.nvim", tag = "v1.6.1" },
+		{ "j-hui/fidget.nvim", tag = "v1.6.1", opts = {} },
 		{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 		"saghen/blink.cmp",
 	},
