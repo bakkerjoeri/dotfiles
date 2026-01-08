@@ -8,7 +8,7 @@ fi
 
 # Plugins
 ## Load plugin manager
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+source .config/zsh/.antidote/antidote.zsh
 antidote load
 
 # Aliases
