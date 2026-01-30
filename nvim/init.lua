@@ -73,8 +73,7 @@ vim.filetype.add({
 })
 
 -- SECTION: Plugins
-local install_lazy = require("lib.install_lazy")
-install_lazy()
+local install_lazy = require("config.lazy")
 
 require("lazy").setup({
 	{ import = "plugins" },
