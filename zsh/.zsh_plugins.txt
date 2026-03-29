@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# Completion
+mattmc3/ez-compinit
+zsh-users/zsh-completions kind:fpath path:src
+
+# Prompt
+romkatv/powerlevel10k
+
+# Fish-like features
+zdharma-continuum/fast-syntax-highlighting  # Syntax highlighting
+zsh-users/zsh-autosuggestions               # Auto-suggestions
+zsh-users/zsh-history-substring-search      # Up/Down to search history

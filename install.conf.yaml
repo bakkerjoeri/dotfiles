@@ -29,9 +29,9 @@
         path: waybar/
     ~/.editorconfig: editorconfig
     ~/.gitconfig: gitconfig
-    ~/.huskyrc: huskyrc
     ~/.config/skhd: skhd
     ~/.config/yabai: yabai
     ~/.profile: profile
-    ~/.zshrc: zshrc
-    ~/.zsh_plugins.txt: zsh_plugins.txt
+    ~/.config/zsh:
+        path: zsh/
+    ~/.zshenv: zshenv

@@ -1,2 +1,5 @@
 packer_compiled.lua
 tmux/*
+zsh/.antidote
+zsh/.p10k.zsh
+zsh/.zsh_plugins.zsh
