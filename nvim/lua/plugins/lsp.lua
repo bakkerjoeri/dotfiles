@@ -47,6 +47,7 @@ local function setup()
 				flags = { debounce_text_changes = 150 },
 				capabilities = capabilities,
 				on_attach = function(client, bufnr)
+					custom_on_attach(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
 						command = "EslintFixAll",
@@ -63,6 +64,16 @@ local function setup()
 					"vue",
 					"svelte",
 					"markdown.mdx",
+				},
+			})
+		end,
+		["jinja_lsp"] = function()
+			vim.filetype.add({
+				extension = {
+					jinja = "jinja",
+					jinja2 = "jinja",
+					j2 = "jinja",
+					njk = "jinja",
 				},
 			})
 		end,
