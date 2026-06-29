@@ -47,10 +47,10 @@ local function setup()
 				flags = { debounce_text_changes = 150 },
 				capabilities = capabilities,
 				on_attach = function(client, bufnr)
-					custom_on_attach(client, bufnr)
+					on_attach_lsp(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
-						command = "EslintFixAll",
+						command = "LspEslintFixAll",
 					})
 					on_attach_lsp(client, bufnr)
 				end,
