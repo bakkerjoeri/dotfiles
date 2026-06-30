@@ -198,7 +198,7 @@ require("lazy").setup({
 		},
 		config = function()
 			pcall(require("nvim-treesitter.install").update({ with_sync = true }))
-			require("nvim-treesitter.configs").setup({
+			require("nvim-treesitter.config").setup({
 				-- TODO add config from kickstart.nvim
 				auto_install = true,
 				indent = {

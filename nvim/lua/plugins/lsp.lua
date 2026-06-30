@@ -50,7 +50,7 @@ local function setup()
 					on_attach_lsp(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
-						command = "LspEslintFixAll",
+						command = "EslintFixAll",
 					})
 					on_attach_lsp(client, bufnr)
 				end,
