@@ -192,59 +192,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		"nvim-treesitter/nvim-treesitter",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-		},
-		config = function()
-			pcall(require("nvim-treesitter.install").update({ with_sync = true }))
-			require("nvim-treesitter.config").setup({
-				-- TODO add config from kickstart.nvim
-				auto_install = true,
-				indent = {
-					enable = true,
-				},
-				highlight = {
-					enable = true,
-					disable = {
-						"markdown",
-					},
-					additional_vim_regex_highlighting = false,
-				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						node_incremental = "<A-o>",
-						scope_incremental = "<A-S-O>",
-						node_decremental = "<A-i>",
-					},
-				},
-			})
-		end,
-	},
-	{
-		"romgrk/nvim-treesitter-context",
-		config = function()
-			require("treesitter-context").setup({
-				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-				throttle = true, -- Throttles plugin updates (may improve performance)
-				mode = "topline",
-				max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
-				patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-					-- For all filetypes
-					-- Note that setting an entry here replaces all other patterns for this entry.
-					-- By setting the 'default' entry below, you can control which nodes you want to
-					-- appear in the context window.
-					default = {
-						"class",
-						"function",
-						"method",
-					},
-				},
-			})
-		end,
-	},
-	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",

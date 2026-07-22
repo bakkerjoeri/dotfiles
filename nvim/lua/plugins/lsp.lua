@@ -1,7 +1,6 @@
 local lsp_servers = {
 	"cssls",
 	"eslint",
-	"graphql",
 	"html",
 	"jsonls",
 	"lua_ls",
@@ -10,7 +9,7 @@ local lsp_servers = {
 	"yamlls",
 }
 
-local on_attach_lsp = function(_, bufnr)
+local set_lsp_keymaps = function(bufnr)
 	vim.keymap.set("n", "gd", ":Telescope lsp_definitions<CR>", { buffer = bufnr, desc = "Go to definition" })
 	vim.keymap.set("n", "gy", ":Telescope lsp_type_definitions<CR>", { buffer = bufnr, desc = "Go to type definition" })
 	vim.keymap.set("n", "gi", ":Telescope lsp_implementations<CR>", { buffer = bufnr, desc = "Go to implementations" })
@@ -24,93 +23,38 @@ local on_attach_lsp = function(_, bufnr)
 	)
 end
 
-local function setup()
+local set_lsp_diagnostic_signs = function()
 	vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
 	vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
 	vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
 	vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
+end
 
-	local capabilities = require("blink.cmp").get_lsp_capabilities()
-
+local function setup()
+	require("mason").setup()
 	require("mason-lspconfig").setup({
 		ensure_installed = lsp_servers,
+		automatic_enable = true,
 	})
-	require("mason-lspconfig").setup_handlers({
-		function(server_name)
-			require("lspconfig")[server_name].setup({
-				capabilities = capabilities,
-				on_attach = on_attach_lsp,
-			})
-		end,
-		["eslint"] = function()
-			require("lspconfig").eslint.setup({
-				flags = { debounce_text_changes = 150 },
-				capabilities = capabilities,
-				on_attach = function(client, bufnr)
-					on_attach_lsp(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						command = "EslintFixAll",
-					})
-					on_attach_lsp(client, bufnr)
-				end,
-				filetypes = {
-					"javascript",
-					"javascriptreact",
-					"javascript.jsx",
-					"typescript",
-					"typescriptreact",
-					"typescript.tsx",
-					"vue",
-					"svelte",
-					"markdown.mdx",
-				},
-			})
-		end,
-		["jinja_lsp"] = function()
-			vim.filetype.add({
-				extension = {
-					jinja = "jinja",
-					jinja2 = "jinja",
-					j2 = "jinja",
-					njk = "jinja",
-				},
-			})
-		end,
-		["ts_ls"] = function()
-			require("lspconfig").ts_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_lsp,
-				init_options = {
-					preferences = {
-						importModuleSpecifierPreference = "relative",
-					},
-				},
-			})
-		end,
-		["lua_ls"] = function()
-			require("lspconfig").lua_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_lsp,
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
-						},
-					},
-				},
-			})
+
+	vim.api.nvim_create_autocmd("LspAttach", {
+		callback = function(args)
+			local bufnr = args.buf
+			set_lsp_keymaps(bufnr)
+			set_lsp_diagnostic_signs()
 		end,
 	})
 end
 
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		{ "mason-org/mason.nvim", version = "^1.0.0" },
-		{ "j-hui/fidget.nvim", tag = "v1.6.1", opts = {} },
-		{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
-		"saghen/blink.cmp",
+	{
+		"mason-org/mason-lspconfig.nvim",
+		dependencies = {
+			"mason-org/mason.nvim",
+			"neovim/nvim-lspconfig",
+		},
+		config = setup,
 	},
-	config = setup,
+	"j-hui/fidget.nvim",
 }
