@@ -29,9 +29,6 @@ local should_enable_folds = false
 
 return {
 	"nvim-treesitter/nvim-treesitter",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
-	},
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
